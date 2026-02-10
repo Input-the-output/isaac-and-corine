@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Discover Lebanon — Isaac &amp; Corine Wedding</title>
+    <meta name="description" content="Discover Lebanon - Isaac & Corine Wedding">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Great+Vibes&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="./style.css">
+  </head>
+
+  <body>
+
+    <!-- ========== MUSIC TOGGLE ========== -->
+    <button id="music-toggle" aria-label="Toggle music">
+      <svg id="music-icon-on" class="music-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+      </svg>
+      <svg id="music-icon-off" class="music-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M9 18V5l12-2v13"/>
+        <circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+        <line x1="1" y1="1" x2="23" y2="23" stroke-width="2"/>
+      </svg>
+    </button>
+    <audio id="bg-music" src="./assets/song.m4a" loop preload="auto"></audio>
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav id="main-nav">
+      <div class="nav-inner">
+        <a href="./index.html" class="nav-brand">I &amp; C</a>
+        <button id="nav-hamburger" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-links">
+          <li><a href="./index.html#invitation">Invitation</a></li>
+          <li><a href="./index.html#countdown">Countdown</a></li>
+          <li><a href="./index.html#location">Location</a></li>
+          <li><a href="./index.html#schedule">Schedule</a></li>
+          <li><a href="./index.html#accommodation">Travel</a></li>
+          <li><a href="./discover.html" class="active">Discover</a></li>
+          <li><a href="./index.html#gifts">Gifts</a></li>
+          <li><a href="./index.html#rsvp">RSVP</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- ========== MAIN CONTENT ========== -->
+    <main class="discover-page">
+
+      <!-- Hero banner -->
+      <section class="discover-hero">
+        <img src="./assets/destinations/beirut.jpg" alt="Lebanon" class="discover-hero-img">
+        <div class="discover-hero-overlay">
+          <h1>Discover Lebanon</h1>
+          <p>While you're here, explore the beauty of this ancient land</p>
+        </div>
+      </section>
+
+      <!-- Destination grid -->
+      <section class="section">
+        <div class="section-inner">
+
+          <div class="discover-mosaic">
+
+            <div class="dest-card dest-featured fade-in">
+              <img src="./assets/destinations/beirut.jpg" alt="Beirut" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Beirut</h3>
+                <p class="dest-desc">Saifi &middot; Downtown &middot; Musee de Sursock &middot; Gemayze &middot; MK</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/baalbek.jpg" alt="Baalbek" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Baalbek</h3>
+                <p class="dest-desc">Ancient Roman temples &amp; UNESCO heritage</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/byblos.jpg" alt="Byblos" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Jbeil &mdash; Byblos</h3>
+                <p class="dest-desc">One of the oldest continuously inhabited cities</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/batroun.jpg" alt="Batroun" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Batroun</h3>
+                <p class="dest-desc">Charming coastal town &amp; seaside dining</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/jeita.jpg" alt="Jeita Grotto" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Jeita Grotto</h3>
+                <p class="dest-desc">Stunning limestone caves &amp; underground river</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/harissa.jpg" alt="Harissa" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Harissa</h3>
+                <p class="dest-desc">Our Lady of Lebanon &amp; panoramic views</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/beiteddine.jpg" alt="Beiteddine Palace" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Beiteddine Palace</h3>
+                <p class="dest-desc">19th-century palace &amp; Mir Amine</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/cedars.jpg" alt="Cedars of God" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Cedars of God</h3>
+                <p class="dest-desc">Ancient cedars &amp; Wadi Qannoubine</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/ixsir.jpg" alt="Wine Tasting" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Wine Tasting</h3>
+                <p class="dest-desc">Ixsir winery &amp; Lebanese vineyards</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/tannourine.jpg" alt="Hiking" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Hiking</h3>
+                <p class="dest-desc">Tannourine &middot; Cedars of God &middot; Barouk</p>
+              </div>
+            </div>
+
+            <div class="dest-card fade-in">
+              <img src="./assets/destinations/marcharbel.jpg" alt="Mar Charbel" loading="lazy">
+              <div class="dest-overlay">
+                <h3 class="dest-name">Mar Charbel</h3>
+                <p class="dest-desc">Historic monastery &amp; pilgrimage site</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Back link -->
+      <section class="section" style="min-height: auto; padding: 2rem 1.5rem 4rem;">
+        <div class="section-inner" style="text-align: center;">
+          <a href="./index.html" class="btn btn-outline">&larr; Back to Wedding</a>
+        </div>
+      </section>
+
+    </main>
+
+    <script>
+      // Hamburger menu
+      var hamburger = document.getElementById("nav-hamburger");
+      var navLinks = document.getElementById("nav-links");
+      hamburger.addEventListener("click", function () {
+        hamburger.classList.toggle("open");
+        navLinks.classList.toggle("open");
+      });
+      navLinks.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          hamburger.classList.remove("open");
+          navLinks.classList.remove("open");
+        });
+      });
+
+      // Music toggle
+      var musicToggle = document.getElementById("music-toggle");
+      var musicIconOn = document.getElementById("music-icon-on");
+      var musicIconOff = document.getElementById("music-icon-off");
+      var bgMusic = document.getElementById("bg-music");
+      var musicPlaying = false;
+
+      // Resume music if it was playing before navigation
+      var shouldPlay = sessionStorage.getItem("music_playing") === "1";
+      if (shouldPlay) {
+        bgMusic.volume = 0.3;
+        // Try autoplay immediately
+        var autoplayWorked = false;
+        bgMusic.play().then(function () {
+          musicPlaying = true;
+          autoplayWorked = true;
+        }).catch(function () {});
+
+        // Also set up fallback: resume on ANY user interaction
+        function resumeMusic() {
+          if (autoplayWorked) return;
+          bgMusic.volume = 0.3;
+          bgMusic.play().then(function () {
+            musicPlaying = true;
+          }).catch(function () {});
+          document.removeEventListener("click", resumeMusic, true);
+          document.removeEventListener("scroll", resumeMusic, true);
+          document.removeEventListener("touchstart", resumeMusic, true);
+        }
+        document.addEventListener("click", resumeMusic, true);
+        document.addEventListener("scroll", resumeMusic, true);
+        document.addEventListener("touchstart", resumeMusic, true);
+      } else {
+        musicIconOn.classList.add("hidden");
+        musicIconOff.classList.remove("hidden");
+      }
+
+      musicToggle.addEventListener("click", function () {
+        if (musicPlaying) {
+          bgMusic.pause();
+          musicIconOn.classList.add("hidden");
+          musicIconOff.classList.remove("hidden");
+          musicPlaying = false;
+          sessionStorage.setItem("music_playing", "0");
+        } else {
+          bgMusic.play().catch(function () {});
+          musicIconOff.classList.add("hidden");
+          musicIconOn.classList.remove("hidden");
+          musicPlaying = true;
+          sessionStorage.setItem("music_playing", "1");
+        }
+      });
+
+      // Fade-in on scroll
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("visible");
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+      document.querySelectorAll(".fade-in").forEach(function (el) {
+        observer.observe(el);
+      });
+
+      // Page transitions (fade out before navigating)
+      document.querySelectorAll('#nav-links a[href*="index.html"], .btn[href*="index.html"], .nav-brand').forEach(function (link) {
+        link.addEventListener("click", function (e) {
+          var href = link.getAttribute("href");
+          if (!href) return;
+          e.preventDefault();
+          // Save music state before leaving
+          sessionStorage.setItem("music_playing", musicPlaying ? "1" : "0");
+          document.body.classList.add("page-leaving");
+          setTimeout(function () {
+            window.location.href = href;
+          }, 400);
+        });
+      });
+    </script>
+  </body>
+</html>
