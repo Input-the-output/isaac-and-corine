@@ -122,7 +122,8 @@ body.page-leaving {
   font-weight: 300;
   letter-spacing: 0.35em;
   text-transform: uppercase;
-  color: var(--gold-soft);
+  /* color: var(--gold-soft); */
+  color: #000;
 }
 @keyframes heroFadeIn {
   from { opacity: 0; transform: translateY(20px); }
