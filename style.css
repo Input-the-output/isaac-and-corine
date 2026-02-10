@@ -118,12 +118,11 @@ body.page-leaving {
 }
 .hero-date-line {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 2rem;
   font-weight: 300;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--gold-soft);
-  text-shadow: 0 1px 10px rgba(0,0,0,0.4);
 }
 @keyframes heroFadeIn {
   from { opacity: 0; transform: translateY(20px); }
@@ -131,11 +130,11 @@ body.page-leaving {
 }
 @media (max-width: 768px) {
   .hero-names { font-size: 3.5rem; }
-  .hero-date-line { font-size: 1rem; letter-spacing: 0.25em; }
+  .hero-date-line { font-size: 1.2rem; letter-spacing: 0.25em; }
 }
 @media (max-width: 480px) {
   .hero-names { font-size: 2.8rem; }
-  .hero-date-line { font-size: 0.85rem; }
+  .hero-date-line { font-size: 1rem; }
 }
 
 /* ============================

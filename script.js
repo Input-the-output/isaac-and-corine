@@ -100,11 +100,32 @@
     navLinks.classList.toggle("open");
   });
 
-  // Close mobile nav on link click
+  // Close mobile nav on link click & handle clicks while on discover page
   navLinks.querySelectorAll("a").forEach(function (link) {
-    link.addEventListener("click", function () {
+    link.addEventListener("click", function (e) {
       hamburger.classList.remove("open");
       navLinks.classList.remove("open");
+
+      var href = link.getAttribute("href");
+      // If we're on the discover page and clicking a non-discover link,
+      // switch back to main content first, then scroll to the target section.
+      if (href !== "#discover" && discoverContent && !discoverContent.classList.contains("hidden")) {
+        e.preventDefault();
+        discoverContent.classList.add("page-leaving");
+        setTimeout(function () {
+          discoverContent.classList.add("hidden");
+          discoverContent.classList.remove("page-leaving", "page-fade-in");
+          mainContent.classList.remove("hidden");
+          mainContent.classList.add("page-fade-in");
+          // Scroll to the target section
+          var target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: "smooth" });
+          }
+          navItems.forEach(function (a) { a.classList.remove("active"); });
+          if (link) link.classList.add("active");
+        }, 400);
+      }
     });
   });
 
