@@ -1,0 +1,38 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache-bust assets
+        run: |
+          SHORT_SHA="${GITHUB_SHA::8}"
+          # Add ?v=<sha> to .css, .js, .mp4, .m4a, .gif, .jpg, .png, .webp refs in HTML files
+          for f in $(find . -name '*.html'); do
+            sed -i -E "s/(\.(css|js|mp4|m4a|gif|jpg|png|webp))(\")/\1?v=${SHORT_SHA}\3/g" "$f"
+          done
+
+      - uses: actions/configure-pages@v4
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - uses: actions/deploy-pages@v4
+        id: deployment
