@@ -426,8 +426,6 @@ body.page-leaving {
 .section-scene {
   max-width: 320px;
   margin: 0 auto 2rem;
-  border-radius: 14px;
-  overflow: hidden;
   position: relative;
 }
 .section-scene img {
@@ -435,17 +433,8 @@ body.page-leaving {
   height: auto;
   object-fit: contain;
   display: block;
-}
-.section-scene::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 50%,
-    rgba(239, 223, 213, 0.6) 100%
-  );
-  pointer-events: none;
+  -webkit-mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 65% at center, black 40%, transparent 100%);
 }
 @media (max-width: 480px) {
   .section-scene { max-width: 260px; }
@@ -1175,6 +1164,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   margin-bottom: 0.5rem;
 }
 .form-group input[type="text"],
+.form-group input[type="tel"],
 .form-group input[type="number"] {
   width: 100%;
   padding: 0.75rem 1rem;

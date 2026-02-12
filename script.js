@@ -457,7 +457,8 @@
       mainContent.classList.remove("page-leaving");
       discoverContent.classList.remove("hidden");
       discoverContent.classList.add("page-fade-in");
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: "instant" });
+      setTimeout(function () { window.scrollTo({ top: 0, behavior: "instant" }); }, 10);
       // Update active nav
       navItems.forEach(function (a) { a.classList.remove("active"); });
       var discoverLink = navLinks.querySelector('a[href="#discover"]');
@@ -569,43 +570,67 @@
   }
 
   /* ---------- RSVP form ---------- */
+  var rsvpSubmitBtn = rsvpForm.querySelector('button[type="submit"]');
+
   rsvpForm.addEventListener("submit", function (e) {
     e.preventDefault();
 
     var name      = document.getElementById("rsvp-name").value.trim();
+    var phone     = document.getElementById("rsvp-phone").value.trim();
     var guests    = document.getElementById("rsvp-guests").value;
     var attending = rsvpForm.querySelector('input[name="attending"]:checked');
 
-    if (!name || !guests || !attending) return;
+    if (!name || !phone || !guests || !attending) return;
 
     var isAttending = attending.value === "yes";
 
-    // Store locally (backend integration can be added later)
-    try {
-      var rsvps = JSON.parse(localStorage.getItem("wedding_rsvps") || "[]");
-      rsvps.push({
-        name: name,
-        guests: guests,
-        attending: isAttending,
-        timestamp: new Date().toISOString()
+    // Disable button while sending
+    rsvpSubmitBtn.disabled = true;
+    rsvpSubmitBtn.textContent = "Sending...";
+
+    // Step 1: Fetch token, Step 2: Submit RSVP
+    fetch("./api/token.php")
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        return fetch("./api/send-rsvp.php", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-RSVP-Token": data.token
+          },
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            guests: guests,
+            attending: attending.value
+          })
+        });
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error("Server error");
+        return res.json();
+      })
+      .then(function () {
+        // Show confetti if attending
+        if (isAttending) {
+          showConfetti();
+        }
+
+        // Show success
+        rsvpForm.classList.add("hidden");
+        rsvpSuccess.classList.remove("hidden");
+
+        if (isAttending) {
+          rsvpMessage.textContent = "We can't wait to celebrate with you, " + name + "!";
+        } else {
+          rsvpMessage.textContent = "We'll miss you, " + name + ". Thank you for letting us know.";
+        }
+      })
+      .catch(function () {
+        rsvpSubmitBtn.disabled = false;
+        rsvpSubmitBtn.textContent = "Send Confirmation";
+        alert("Something went wrong. Please try again.");
       });
-      localStorage.setItem("wedding_rsvps", JSON.stringify(rsvps));
-    } catch (err) { /* ignore storage errors */ }
-
-    // Show confetti if attending
-    if (isAttending) {
-      showConfetti();
-    }
-
-    // Show success
-    rsvpForm.classList.add("hidden");
-    rsvpSuccess.classList.remove("hidden");
-
-    if (isAttending) {
-      rsvpMessage.textContent = "We can't wait to celebrate with you, " + name + "!";
-    } else {
-      rsvpMessage.textContent = "We'll miss you, " + name + ". Thank you for letting us know.";
-    }
   });
 
 })();

@@ -1,0 +1,41 @@
+# ==========================================
+# Isaac & Corine — API Security
+# ==========================================
+
+# Block directory listing
+Options -Indexes
+
+# Block ALL direct access by default, only allow the 2 PHP endpoints
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block access to rate_limits directory entirely
+    RewriteRule ^rate_limits - [F,L]
+
+    # Block access to PHPMailer source files entirely
+    RewriteRule ^PHPMailer - [F,L]
+
+    # Block all dotfiles (like .htaccess itself)
+    RewriteRule (^\.|/\.) - [F,L]
+</IfModule>
+
+# Block access to all non-PHP files (json, md, txt, LICENSE, VERSION, etc.)
+<FilesMatch "\.(json|md|txt|log|xml|yml|yaml|ini|env|conf|sh|sql|bak|dist)$">
+    Require all denied
+</FilesMatch>
+
+# Block specific sensitive files by name
+<FilesMatch "^(LICENSE|VERSION|README|SECURITY|COMMITMENT|SMTPUTF8|composer\.json|composer\.lock|get_oauth_token\.php)">
+    Require all denied
+</FilesMatch>
+
+# Prevent PHP files from being downloaded as source (extra safety)
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "same-origin"
+</IfModule>
+
+# Disable PHP error display (errors go to log only)
+php_flag display_errors Off
+php_flag log_errors On

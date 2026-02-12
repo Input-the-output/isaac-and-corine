@@ -1,0 +1,17 @@
+# API credentials — NEVER commit these
+api/send-rsvp.php
+api/token.php
+
+# Rate limit data
+api/rate_limits/
+
+# PHPMailer library (download on server, don't commit)
+api/PHPMailer-7.0.2/
+
+# Environment files
+.env
+*.env
+
+# OS files
+.DS_Store
+Thumbs.db
