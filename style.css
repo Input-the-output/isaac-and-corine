@@ -5,22 +5,22 @@
 
 /* --- CSS Variables --- */
 :root {
-  --background:    #fae9e2;
+  --background:    #efdfd5;
   --foreground:    #587042;
-  --cream:         #f7e0de;
-  --ivory:         #fae9e2;
+  --cream:         #efdfd5;
+  --ivory:         #efdfd5;
   --sage:          #a9b494;
   --sage-dark:     #587042;
-  --sage-light:    #ceaca1;
+  --sage-light:    #a9b494;
   --gold:          #587042;
   --gold-soft:     #a9b494;
   --olive:         #a9b494;
   --muted:         #efdfd5;
-  --muted-fg:      #a17f7a;
-  --border:        #ceaca1;
-  --card:          #f7e0de;
-  --blush:         #efc0bc;
-  --teal:          #80adbc;
+  --muted-fg:      #a9b494;
+  --border:        #a9b494;
+  --card:          #efdfd5;
+  --blush:         #a9b494;
+  --teal:          #a9b494;
   --font-display:  "Cormorant Garamond", serif;
   --font-body:     "Lora", serif;
   --font-script:   "Great Vibes", cursive;
@@ -87,7 +87,7 @@ body.page-leaving {
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 38vh;
+  padding-top: 12vh;
   overflow: hidden;
   background: var(--sage-dark);
 }
@@ -99,6 +99,7 @@ body.page-leaving {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center top;
   opacity: 0.85;
 }
 .hero-overlay-text {
@@ -115,7 +116,7 @@ body.page-leaving {
   font-family: var(--font-script);
   font-size: 5rem;
   color: #a9b494;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.5), 0 0 40px rgba(0,0,0,0.2);
+  text-shadow: 0 2px 20px rgba(0,0,0,0.15), 0 0 40px rgba(0,0,0,0.08);
   line-height: 1.1;
 }
 .hero-date-line {
@@ -125,17 +126,19 @@ body.page-leaving {
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: #587042;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.1);
 }
 @keyframes heroFadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 768px) {
+  .section-hero { padding-top: 10vh; }
   .hero-names { font-size: 3.5rem; }
   .hero-date-line { font-size: 1.2rem; letter-spacing: 0.25em; }
 }
 @media (max-width: 480px) {
+  .section-hero { padding-top: 18vh; }
   .hero-names { font-size: 2.8rem; }
   .hero-date-line { font-size: 1rem; }
 }
@@ -147,7 +150,7 @@ body.page-leaving {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #fae9e2;
+  background: #efdfd5;
   cursor: pointer;
   transition: opacity 0.8s ease-in-out;
 }
@@ -215,7 +218,7 @@ body.page-leaving {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 900;
-  background: rgba(250, 233, 226, 0.92);
+  background: rgba(239, 223, 213, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -286,7 +289,7 @@ body.page-leaving {
   #nav-links {
     position: fixed;
     top: 56px; left: 0; right: 0;
-    background: rgba(250, 233, 226, 0.97);
+    background: rgba(239, 223, 213, 0.97);
     backdrop-filter: blur(12px);
     flex-direction: column;
     align-items: center;
@@ -425,14 +428,12 @@ body.page-leaving {
   margin: 0 auto 2rem;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: var(--shadow-elegant);
   position: relative;
 }
 .section-scene img {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
-  object-position: center 35%;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 .section-scene::after {
@@ -442,13 +443,13 @@ body.page-leaving {
   background: linear-gradient(
     to bottom,
     transparent 50%,
-    rgba(247, 224, 222, 0.6) 100%
+    rgba(239, 223, 213, 0.6) 100%
   );
   pointer-events: none;
 }
 @media (max-width: 480px) {
   .section-scene { max-width: 260px; }
-  .section-scene img { height: 140px; }
+  .section-scene img { height: auto; }
 }
 
 /* Couple names */
@@ -462,13 +463,13 @@ body.page-leaving {
 }
 .name-script {
   font-family: var(--font-script);
-  font-size: 4.5rem;
+  font-size: 5rem;
   color: var(--sage-dark);
   line-height: 1;
 }
 .name-ampersand {
   font-family: var(--font-display);
-  font-size: 2rem;
+  font-size: 2.2rem;
   font-weight: 300;
   color: var(--gold);
   margin: 0 0.75rem;
@@ -513,7 +514,7 @@ body.page-leaving {
 }
 .invitation-venue h3 {
   font-family: var(--font-display);
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -677,7 +678,7 @@ body.page-leaving {
   color: var(--ivory);
 }
 .btn-primary:hover {
-  background: #4a5f38;
+  background: #476339;
 }
 
 /* ============================
@@ -839,7 +840,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   letter-spacing: 0.04em;
   transition: background 0.2s;
 }
-.accordion-trigger:hover { background: rgba(206, 172, 161, 0.25); }
+.accordion-trigger:hover { background: rgba(169, 180, 148, 0.25); }
 .accordion-chevron {
   transition: transform 0.3s ease;
   color: var(--sage);
@@ -1288,8 +1289,8 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 40%;
+  object-fit: contain;
+  object-position: center center;
   z-index: 0;
 }
 .footer-overlay {
@@ -1323,7 +1324,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   display: inline-block;
   width: 60px;
   height: 1px;
-  background: rgba(250, 233, 226, 0.4);
+  background: rgba(239, 223, 213, 0.4);
 }
 .footer-divider-heart {
   font-size: 1.6rem;
@@ -1353,27 +1354,28 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(250, 233, 226, 0.7);
+  color: rgba(239, 223, 213, 0.7);
   margin-bottom: 1.5rem;
 }
 .footer-tagline {
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-style: italic;
-  color: rgba(250, 233, 226, 0.5);
+  color: rgba(239, 223, 213, 0.5);
   margin-bottom: 2rem;
 }
 .footer-monogram {
   display: inline-block;
   font-family: var(--font-script);
   font-size: 1.4rem;
-  color: rgba(250, 233, 226, 0.35);
-  border: 1px solid rgba(250, 233, 226, 0.2);
+  color: rgba(239, 223, 213, 0.35);
+  border: 1px solid rgba(239, 223, 213, 0.2);
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  line-height: 60px;
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
   letter-spacing: 0.05em;
+  white-space: nowrap;
 }
 @media (max-width: 480px) {
   .footer-names { font-size: 2.8rem; }

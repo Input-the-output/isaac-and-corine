@@ -227,16 +227,11 @@
     resize();
     window.addEventListener("resize", resize);
 
-    // Wedding palette: sage greens, blush pinks, teal
+    // Wedding palette: 3-color scheme
     var colors = [
-      [128, 173, 188],  // #80adbc teal
-      [88, 112, 66],    // #587042 dark olive
-      [169, 180, 148],  // #a9b494 sage
-      [161, 127, 122],  // #a17f7a dusty rose
-      [206, 172, 161],  // #ceaca1 warm blush
-      [239, 192, 188],  // #efc0bc soft pink
-      [247, 224, 222],  // #f7e0de light pink
       [239, 223, 213],  // #efdfd5 cream
+      [88, 112, 66],    // #587042 dark sage
+      [169, 180, 148],  // #a9b494 sage
     ];
 
     var particles = [];
@@ -493,9 +488,17 @@
       discoverContent.classList.remove("page-leaving", "page-fade-in");
       mainContent.classList.remove("hidden");
       mainContent.classList.add("page-fade-in");
-      window.scrollTo(0, 0);
+      // Scroll to the Discover Lebanon CTA block
+      setTimeout(function () {
+        var discoverCTA = document.getElementById("discover-cta");
+        if (discoverCTA) {
+          discoverCTA.scrollIntoView({ behavior: "instant", block: "center" });
+        }
+      }, 50);
       // Update active nav
       navItems.forEach(function (a) { a.classList.remove("active"); });
+      var discoverLink = navLinks.querySelector('a[href="#discover"]');
+      if (discoverLink) discoverLink.classList.add("active");
     }, 400);
   }
 
