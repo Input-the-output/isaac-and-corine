@@ -1,23 +1,11 @@
-name: Deploy to GitHub Pages
+name: Deploy to Namecheap
 
 on:
   push:
     branches: [main]
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
-
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -25,14 +13,27 @@ jobs:
       - name: Cache-bust assets
         run: |
           SHORT_SHA="${GITHUB_SHA::8}"
-          # Add ?v=<sha> to .css, .js, .mp4, .m4a, .gif, .jpg, .png, .webp refs in HTML files
           for f in $(find . -name '*.html'); do
             sed -i -E "s/(\.(css|js|mp4|m4a|gif|jpg|png|webp))(\")/\1?v=${SHORT_SHA}\3/g" "$f"
           done
 
-      - uses: actions/configure-pages@v4
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: .
-      - uses: actions/deploy-pages@v4
-        id: deployment
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p 21098 -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>/dev/null || true
+          # Fallback: also accept the IP
+          ssh-keyscan -p 21098 -H 198.177.120.119 >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'api/send-rsvp.php' \
+            --exclude 'api/token.php' \
+            --exclude 'api/rate_limits/' \
+            --exclude 'api/PHPMailer-7.0.2/' \
+            -e "ssh -i ~/.ssh/deploy_key -p 21098" \
+            ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}

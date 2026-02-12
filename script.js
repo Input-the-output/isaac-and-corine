@@ -5,10 +5,8 @@
 (function () {
   "use strict";
 
-  // Wedding date: June 26, 2026, 6:00 PM (Lebanon time, UTC+3)
-  // TEST: 10 seconds from now — change back to the real date after testing
-  const WEDDING_DATE = new Date(Date.now() + 10 * 1000);
-  // const WEDDING_DATE = new Date("2026-06-26T18:00:00+03:00");
+  // Wedding date: June 20, 2026, 6:00 PM (Lebanon time, UTC+3)
+  const WEDDING_DATE = new Date("2026-06-20T18:00:00+03:00");
 
   /* ---------- DOM refs ---------- */
   const overlay      = document.getElementById("intro-overlay");
