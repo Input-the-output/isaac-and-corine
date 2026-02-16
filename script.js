@@ -20,19 +20,44 @@
   const bgMusic      = document.getElementById("bg-music");
   const hamburger    = document.getElementById("nav-hamburger");
   const navLinks     = document.getElementById("nav-links");
-  const rsvpForm     = document.getElementById("rsvp-form");
-  const rsvpSuccess  = document.getElementById("rsvp-success");
-  const rsvpMessage  = document.getElementById("rsvp-success-message");
 
   /* ---------- Intro overlay ---------- */
   let introState = "idle"; // idle | playing | fading
+  var fadeInterval = null;
+
+  // Gradually raise volume from 0 to 1.0 (system volume) over ~3 seconds
+  function fadeInMusic() {
+    if (fadeInterval) clearInterval(fadeInterval);
+    fadeInterval = setInterval(function () {
+      if (bgMusic.volume < 0.97) {
+        bgMusic.volume = Math.min(bgMusic.volume + 0.02, 1.0);
+      } else {
+        bgMusic.volume = 1.0;
+        clearInterval(fadeInterval);
+        fadeInterval = null;
+      }
+    }, 60);
+  }
 
   function handleIntroClick() {
     if (introState !== "idle") return;
     introState = "playing";
     if (introPrompt) introPrompt.style.display = "none";
-    introVideo.play().catch(function () {
-      revealMain();
+
+    // Start music FIRST so the user-activation token is used for audio
+    bgMusic.currentTime = 2;
+    bgMusic.volume = 0;
+    musicPlaying = true;
+    musicIconOn.classList.remove("hidden");
+    musicIconOff.classList.add("hidden");
+
+    bgMusic.play().then(function () {
+      fadeInMusic();
+      // Play envelope video after music has started
+      introVideo.play().catch(function () { revealMain(); });
+    }).catch(function () {
+      // If audio fails, still play the video
+      introVideo.play().catch(function () { revealMain(); });
     });
   }
 
@@ -64,11 +89,6 @@
     mainContent.classList.add("page-fade-in");
     mainNav.classList.add("page-fade-in");
 
-    // Try to start music
-    bgMusic.volume = 0.3;
-    musicPlaying = true;
-    bgMusic.play().catch(function () { /* user interaction needed */ });
-
     // Start countdown
     startCountdown();
 
@@ -90,6 +110,18 @@
       musicIconOff.classList.add("hidden");
       musicIconOn.classList.remove("hidden");
       musicPlaying = true;
+    }
+  });
+
+  // Stop music when leaving the page
+  window.addEventListener("pagehide", function () {
+    bgMusic.pause();
+  });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      bgMusic.pause();
+    } else if (musicPlaying) {
+      bgMusic.play().catch(function () {});
     }
   });
 
@@ -148,19 +180,10 @@
     });
   }
 
-  // Hide/show nav on scroll
-  let lastScrollY = 0;
-  function handleNavScroll() {
-    const current = window.scrollY;
-    if (current > lastScrollY && current > 200) {
-      mainNav.classList.add("nav-hidden");
-    } else {
-      mainNav.classList.remove("nav-hidden");
-    }
-    lastScrollY = current;
+  // Nav always visible — just update active link on scroll
+  window.addEventListener("scroll", function () {
     updateActiveNav();
-  }
-  window.addEventListener("scroll", handleNavScroll, { passive: true });
+  }, { passive: true });
 
   /* ---------- Countdown ---------- */
   var countdownDone = false;
@@ -567,68 +590,153 @@
     }, 4200);
   }
 
-  /* ---------- RSVP form ---------- */
-  var rsvpSubmitBtn = rsvpForm.querySelector('button[type="submit"]');
+  /* ---------- RSVP — Guest Lookup & Confirm ---------- */
+  var rsvpLookup     = document.getElementById("rsvp-lookup");
+  var rsvpSearch     = document.getElementById("rsvp-search");
+  var rsvpFindBtn    = document.getElementById("rsvp-find-btn");
+  var rsvpLookupErr  = document.getElementById("rsvp-lookup-error");
+  var rsvpConfirm    = document.getElementById("rsvp-confirm");
+  var rsvpGuestName  = document.getElementById("rsvp-guest-name");
+  var rsvpPlusOneSec = document.getElementById("rsvp-plus-one-section");
+  var rsvpPlusOneName= document.getElementById("rsvp-plus-one-name");
+  var rsvpSubmitBtn  = document.getElementById("rsvp-submit-btn");
+  var rsvpSuccess    = document.getElementById("rsvp-success");
+  var rsvpMessage    = document.getElementById("rsvp-success-message");
 
-  rsvpForm.addEventListener("submit", function (e) {
-    e.preventDefault();
+  var currentGuest = null;
 
-    var name      = document.getElementById("rsvp-name").value.trim();
-    var phone     = document.getElementById("rsvp-phone").value.trim();
-    var guests    = document.getElementById("rsvp-guests").value;
-    var attending = rsvpForm.querySelector('input[name="attending"]:checked');
+  // Allow pressing Enter in the search field
+  if (rsvpSearch) {
+    rsvpSearch.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        rsvpFindBtn.click();
+      }
+    });
+  }
 
-    if (!name || !phone || !guests || !attending) return;
+  // Step 1: Find invitation
+  if (rsvpFindBtn) {
+    rsvpFindBtn.addEventListener("click", function () {
+      var name = rsvpSearch.value.trim();
+      if (!name) {
+        rsvpLookupErr.textContent = "Please enter your name.";
+        rsvpLookupErr.classList.remove("hidden");
+        return;
+      }
 
-    var isAttending = attending.value === "yes";
+      rsvpFindBtn.disabled = true;
+      rsvpFindBtn.textContent = "Searching...";
+      rsvpLookupErr.classList.add("hidden");
 
-    // Disable button while sending
-    rsvpSubmitBtn.disabled = true;
-    rsvpSubmitBtn.textContent = "Sending...";
+      fetch("./api/token.php")
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          return fetch("./api/guest-lookup.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-RSVP-Token": data.token
+            },
+            body: JSON.stringify({ name: name })
+          });
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (data.error) {
+            rsvpLookupErr.textContent = data.error;
+            rsvpLookupErr.classList.remove("hidden");
+            rsvpFindBtn.disabled = false;
+            rsvpFindBtn.textContent = "Find Your Invitation";
+            return;
+          }
 
-    // Step 1: Fetch token, Step 2: Submit RSVP
-    fetch("./api/token.php")
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        return fetch("./api/send-rsvp.php", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-RSVP-Token": data.token
-          },
-          body: JSON.stringify({
-            name: name,
-            phone: phone,
-            guests: guests,
-            attending: attending.value
-          })
+          if (!data.guest) {
+            rsvpLookupErr.textContent = "We couldn\u2019t find your name on the guest list. Please check the spelling or contact us directly.";
+            rsvpLookupErr.classList.remove("hidden");
+            rsvpFindBtn.disabled = false;
+            rsvpFindBtn.textContent = "Find Your Invitation";
+            return;
+          }
+
+          // Guest found — show confirmation card
+          currentGuest = data.guest;
+          rsvpGuestName.textContent = data.guest.name;
+
+          if (data.guest.plus_one && data.guest.plus_one_name) {
+            rsvpPlusOneName.textContent = data.guest.plus_one_name;
+            rsvpPlusOneSec.classList.remove("hidden");
+          } else {
+            rsvpPlusOneSec.classList.add("hidden");
+          }
+
+          rsvpLookup.classList.add("hidden");
+          rsvpConfirm.classList.remove("hidden");
+
+          // Re-observe fade-ins inside the confirm card
+          rsvpConfirm.querySelectorAll(".fade-in").forEach(function (el) {
+            el.classList.add("visible");
+          });
+        })
+        .catch(function () {
+          rsvpLookupErr.textContent = "Something went wrong. Please try again.";
+          rsvpLookupErr.classList.remove("hidden");
+          rsvpFindBtn.disabled = false;
+          rsvpFindBtn.textContent = "Find Your Invitation";
         });
-      })
-      .then(function (res) {
-        if (!res.ok) throw new Error("Server error");
-        return res.json();
-      })
-      .then(function () {
-        // Show confetti if attending
-        if (isAttending) {
-          showConfetti();
-        }
+    });
+  }
 
-        // Show success
-        rsvpForm.classList.add("hidden");
-        rsvpSuccess.classList.remove("hidden");
+  // Step 2: Submit attendance
+  if (rsvpSubmitBtn) {
+    rsvpSubmitBtn.addEventListener("click", function () {
+      var attending = document.querySelector('#rsvp-confirm input[name="attending"]:checked');
+      if (!attending) return;
 
-        if (isAttending) {
-          rsvpMessage.textContent = "We can't wait to celebrate with you, " + name + "!";
-        } else {
-          rsvpMessage.textContent = "We'll miss you, " + name + ". Thank you for letting us know.";
-        }
-      })
-      .catch(function () {
-        rsvpSubmitBtn.disabled = false;
-        rsvpSubmitBtn.textContent = "Send Confirmation";
-        alert("Something went wrong. Please try again.");
-      });
-  });
+      var isAttending = attending.value === "yes";
+
+      rsvpSubmitBtn.disabled = true;
+      rsvpSubmitBtn.textContent = "Sending...";
+
+      fetch("./api/token.php")
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          return fetch("./api/send-rsvp.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-RSVP-Token": data.token
+            },
+            body: JSON.stringify({
+              guest_id: currentGuest._id,
+              name: currentGuest.name,
+              plus_one_name: currentGuest.plus_one_name || null,
+              attending: attending.value
+            })
+          });
+        })
+        .then(function (res) {
+          if (!res.ok) throw new Error("Server error");
+          return res.json();
+        })
+        .then(function () {
+          if (isAttending) showConfetti();
+
+          rsvpConfirm.classList.add("hidden");
+          rsvpSuccess.classList.remove("hidden");
+
+          if (isAttending) {
+            rsvpMessage.textContent = "We can\u2019t wait to celebrate with you, " + currentGuest.name + "!";
+          } else {
+            rsvpMessage.textContent = "We\u2019ll miss you, " + currentGuest.name + ". Thank you for letting us know.";
+          }
+        })
+        .catch(function () {
+          rsvpSubmitBtn.disabled = false;
+          rsvpSubmitBtn.textContent = "Send Confirmation";
+          alert("Something went wrong. Please try again.");
+        });
+    });
+  }
 
 })();

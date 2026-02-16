@@ -31,7 +31,7 @@
 
 /* --- Reset --- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; color-scheme: light only; }
+html { scroll-behavior: smooth; color-scheme: light only; scroll-padding-top: 60px; }
 body {
   font-family: var(--font-body);
   color: var(--foreground);
@@ -83,11 +83,12 @@ body.page-leaving {
 .section-hero {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - 56px);
+  margin-top: 56px;
   display: flex;
   align-items: flex-start;
   justify-content: center;
-  padding-top: 12vh;
+  padding-top: 10vh;
   overflow: hidden;
   background: var(--sage-dark);
 }
@@ -114,7 +115,7 @@ body.page-leaving {
 }
 .hero-names {
   font-family: var(--font-script);
-  font-size: 5rem;
+  font-size: 6rem;
   color: #a9b494;
   text-shadow: 0 2px 20px rgba(0,0,0,0.15), 0 0 40px rgba(0,0,0,0.08);
   line-height: 1.1;
@@ -133,13 +134,13 @@ body.page-leaving {
   to   { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 768px) {
-  .section-hero { padding-top: 10vh; }
-  .hero-names { font-size: 3.5rem; }
+  .section-hero { padding-top: 8vh; }
+  .hero-names { font-size: 4rem; }
   .hero-date-line { font-size: 1.2rem; letter-spacing: 0.25em; }
 }
 @media (max-width: 480px) {
-  .section-hero { padding-top: 18vh; }
-  .hero-names { font-size: 2.8rem; }
+  .section-hero { padding-top: 12vh; }
+  .hero-names { font-size: 3.2rem; }
   .hero-date-line { font-size: 1rem; }
 }
 
@@ -224,7 +225,7 @@ body.page-leaving {
   border-bottom: 1px solid var(--border);
   transition: transform 0.3s ease;
 }
-#main-nav.nav-hidden { transform: translateY(-100%); }
+/* nav-hidden removed — nav is always visible */
 .nav-inner {
   max-width: 1100px;
   margin: 0 auto;
@@ -1546,3 +1547,98 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   70%  { opacity: 1; }
   100% { opacity: 0; }
 }
+
+/* ============================
+   SCHEDULE → TRAVEL SPACING
+   ============================ */
+#accommodation {
+  margin-top: 3rem;
+}
+
+/* ============================
+   GOOD-TO-KNOW LIST (Hair etc)
+   ============================ */
+.gtk-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.gtk-list li {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--muted-fg);
+  padding: 0.15rem 0;
+}
+
+/* ============================
+   RSVP — REDESIGNED
+   ============================ */
+.rsvp-deadline {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--sage);
+  margin-bottom: 2.5rem;
+}
+.rsvp-error {
+  text-align: center;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: #b45454;
+  margin-top: 1rem;
+  animation: fadeInUp 0.4s ease;
+}
+.rsvp-confirm {
+  max-width: 500px;
+  margin: 0 auto;
+  animation: fadeInUp 0.6s ease;
+}
+.rsvp-guest-card {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-elegant);
+  margin-bottom: 2rem;
+}
+.rsvp-guest-card-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.rsvp-card-name {
+  font-family: var(--font-script);
+  font-size: 2.8rem;
+  color: var(--sage-dark);
+  line-height: 1.2;
+}
+.rsvp-plus-one {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.rsvp-plus-label {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--sage);
+}
+.rsvp-plus-name {
+  font-family: var(--font-script);
+  font-size: 2.4rem;
+  color: var(--sage-dark);
+  line-height: 1.2;
+}
+@media (max-width: 480px) {
+  .rsvp-card-name { font-size: 2.2rem; }
+  .rsvp-plus-name { font-size: 1.8rem; }
+  .rsvp-guest-card { padding: 2rem 1.25rem; }
+}
+
+/* Discover page top offset for fixed nav */
+.discover-page { padding-top: 56px; }

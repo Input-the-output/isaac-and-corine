@@ -36,6 +36,7 @@ jobs:
             --exclude '.github' \
             --exclude 'api/send-rsvp.php' \
             --exclude 'api/token.php' \
+            --exclude 'api/config.php' \
             --exclude 'api/rate_limits/' \
             --exclude 'api/PHPMailer-7.0.2/' \
             -e "ssh -p 21098" \

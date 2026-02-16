@@ -1,6 +1,7 @@
 # API credentials — NEVER commit these
 api/send-rsvp.php
 api/token.php
+api/config.php
 
 # Rate limit data
 api/rate_limits/
@@ -15,3 +16,6 @@ api/PHPMailer-7.0.2/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Debug logs
+ssh-debug.log
