@@ -345,10 +345,10 @@ body.page-leaving {
   transform: scaleX(-1);
 }
 @media (max-width: 768px) {
-  .decor { opacity: 0.2 !important; width: 70px !important; }
+  .decor { opacity: 0.18 !important; width: 60px !important; }
 }
 @media (max-width: 480px) {
-  .decor { display: none !important; }
+  .decor { opacity: 0.15 !important; width: 50px !important; }
 }
 .section-title {
   font-family: var(--font-display);
