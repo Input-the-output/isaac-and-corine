@@ -5,20 +5,20 @@
 
 /* --- CSS Variables --- */
 :root {
-  --background:    #efdfd5;
+  --background:    #F7F2EE;
   --foreground:    #587042;
-  --cream:         #efdfd5;
-  --ivory:         #efdfd5;
+  --cream:         #F7F2EE;
+  --ivory:         #F7F2EE;
   --sage:          #a9b494;
   --sage-dark:     #587042;
   --sage-light:    #a9b494;
   --gold:          #587042;
   --gold-soft:     #a9b494;
   --olive:         #a9b494;
-  --muted:         #efdfd5;
+  --muted:         #F7F2EE;
   --muted-fg:      #a9b494;
   --border:        #a9b494;
-  --card:          #efdfd5;
+  --card:          #F7F2EE;
   --blush:         #a9b494;
   --teal:          #a9b494;
   --font-display:  "Cormorant Garamond", serif;
@@ -150,7 +150,7 @@ body.page-leaving {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #efdfd5;
+  background: #F7F2EE;
   cursor: pointer;
   transition: opacity 0.8s ease-in-out;
 }
@@ -218,7 +218,7 @@ body.page-leaving {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 900;
-  background: rgba(239, 223, 213, 0.92);
+  background: rgba(247, 242, 238, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -289,7 +289,7 @@ body.page-leaving {
   #nav-links {
     position: fixed;
     top: 56px; left: 0; right: 0;
-    background: rgba(239, 223, 213, 0.97);
+    background: rgba(247, 242, 238, 0.97);
     backdrop-filter: blur(12px);
     flex-direction: column;
     align-items: center;
@@ -1313,7 +1313,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   display: inline-block;
   width: 60px;
   height: 1px;
-  background: rgba(239, 223, 213, 0.4);
+  background: rgba(247, 242, 238, 0.4);
 }
 .footer-divider-heart {
   font-size: 1.6rem;
@@ -1343,22 +1343,22 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(239, 223, 213, 0.7);
+  color: rgba(247, 242, 238, 0.7);
   margin-bottom: 1.5rem;
 }
 .footer-tagline {
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-style: italic;
-  color: rgba(239, 223, 213, 0.5);
+  color: rgba(247, 242, 238, 0.5);
   margin-bottom: 2rem;
 }
 .footer-monogram {
   display: inline-block;
   font-family: var(--font-script);
   font-size: 1.4rem;
-  color: rgba(239, 223, 213, 0.35);
-  border: 1px solid rgba(239, 223, 213, 0.2);
+  color: rgba(247, 242, 238, 0.35);
+  border: 1px solid rgba(247, 242, 238, 0.2);
   border-radius: 50%;
   width: 70px;
   height: 70px;
