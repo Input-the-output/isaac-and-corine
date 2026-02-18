@@ -454,14 +454,15 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
-            observer.unobserve(entry.target);
+          } else {
+            entry.target.classList.remove("visible");
           }
         });
       },
       { threshold: 0.15 }
     );
 
-    document.querySelectorAll(".fade-in").forEach(function (el) {
+    document.querySelectorAll("#main-content .fade-in").forEach(function (el) {
       observer.observe(el);
     });
   }
@@ -492,7 +493,8 @@
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
-            discoverObserver.unobserve(entry.target);
+          } else {
+            entry.target.classList.remove("visible");
           }
         });
       }, { threshold: 0.1 });
