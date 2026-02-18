@@ -5,20 +5,20 @@
 
 /* --- CSS Variables --- */
 :root {
-  --background:    #F7F2EE;
+  --background:    #efdfd5;
   --foreground:    #587042;
-  --cream:         #F7F2EE;
-  --ivory:         #F7F2EE;
+  --cream:         #efdfd5;
+  --ivory:         #efdfd5;
   --sage:          #a9b494;
   --sage-dark:     #587042;
   --sage-light:    #a9b494;
   --gold:          #587042;
   --gold-soft:     #a9b494;
   --olive:         #a9b494;
-  --muted:         #F7F2EE;
+  --muted:         #efdfd5;
   --muted-fg:      #a9b494;
   --border:        #a9b494;
-  --card:          #F7F2EE;
+  --card:          #efdfd5;
   --blush:         #a9b494;
   --teal:          #a9b494;
   --font-display:  "Cormorant Garamond", serif;
@@ -39,6 +39,37 @@ body {
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  position: relative;
+}
+/* Subtle paper / parchment texture overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    /* fine fibrous grain */
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(180, 160, 140, 0.018) 2px,
+      rgba(180, 160, 140, 0.018) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 3px,
+      rgba(160, 140, 120, 0.015) 3px,
+      rgba(160, 140, 120, 0.015) 4px
+    ),
+    /* soft mottled patches */
+    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(200, 180, 160, 0.06), transparent),
+    radial-gradient(ellipse 500px 500px at 75% 60%, rgba(190, 170, 150, 0.05), transparent),
+    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(180, 160, 140, 0.04), transparent),
+    radial-gradient(ellipse 300px 250px at 10% 70%, rgba(195, 175, 155, 0.045), transparent),
+    radial-gradient(ellipse 350px 400px at 85% 20%, rgba(185, 165, 145, 0.04), transparent);
 }
 img, video { max-width: 100%; display: block; }
 a { color: var(--sage-dark); text-decoration: none; }
@@ -150,7 +181,7 @@ body.page-leaving {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #F7F2EE;
+  background: #efdfd5;
   cursor: pointer;
   transition: opacity 0.8s ease-in-out;
 }
@@ -218,7 +249,7 @@ body.page-leaving {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 900;
-  background: rgba(247, 242, 238, 0.92);
+  background: rgba(239, 223, 213, 0.92);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
@@ -289,7 +320,7 @@ body.page-leaving {
   #nav-links {
     position: fixed;
     top: 56px; left: 0; right: 0;
-    background: rgba(247, 242, 238, 0.97);
+    background: rgba(239, 223, 213, 0.97);
     backdrop-filter: blur(12px);
     flex-direction: column;
     align-items: center;
@@ -1313,7 +1344,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   display: inline-block;
   width: 60px;
   height: 1px;
-  background: rgba(247, 242, 238, 0.4);
+  background: rgba(239, 223, 213, 0.4);
 }
 .footer-divider-heart {
   font-size: 1.6rem;
@@ -1343,22 +1374,22 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(247, 242, 238, 0.7);
+  color: rgba(239, 223, 213, 0.7);
   margin-bottom: 1.5rem;
 }
 .footer-tagline {
   font-family: var(--font-body);
   font-size: 0.9rem;
   font-style: italic;
-  color: rgba(247, 242, 238, 0.5);
+  color: rgba(239, 223, 213, 0.5);
   margin-bottom: 2rem;
 }
 .footer-monogram {
   display: inline-block;
   font-family: var(--font-script);
   font-size: 1.4rem;
-  color: rgba(247, 242, 238, 0.35);
-  border: 1px solid rgba(247, 242, 238, 0.2);
+  color: rgba(239, 223, 213, 0.35);
+  border: 1px solid rgba(239, 223, 213, 0.2);
   border-radius: 50%;
   width: 70px;
   height: 70px;

@@ -250,7 +250,7 @@
 
     // Wedding palette: 3-color scheme
     var colors = [
-      [247, 242, 238],  // #F7F2EE cream
+      [239, 223, 213],  // #efdfd5 cream
       [88, 112, 66],    // #587042 dark sage
       [169, 180, 148],  // #a9b494 sage
     ];
@@ -307,7 +307,7 @@
       for (var j = 0; j < 20; j++) {
         var a2 = Math.random() * Math.PI * 2;
         var s2 = 0.5 + Math.random() * 1.5;
-        particles.push(new Particle(x, y, [247, 242, 238], s2, a2, 25));
+        particles.push(new Particle(x, y, [239, 223, 213], s2, a2, 25));
       }
     }
 
@@ -326,7 +326,7 @@
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Semi-transparent layer for trails
-      ctx.fillStyle = "rgba(247, 242, 238, 0.15)";
+      ctx.fillStyle = "rgba(239, 223, 213, 0.15)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Launch rockets periodically
