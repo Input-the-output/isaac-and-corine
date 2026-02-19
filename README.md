@@ -46,8 +46,7 @@ Live at **https://isaacandcorine.com/**
 │   └── PHPMailer-7.0.2/     # PHPMailer library (GITIGNORED)
 │
 └── .github/workflows/
-    ├── deploy.yml           # Production deploy (main → Namecheap)
-    └── staging.yml          # Staging deploy (staging → GitHub Pages)
+    └── deploy.yml           # Production deploy (main → Namecheap)
 ```
 
 ## Sections
@@ -210,7 +209,7 @@ Set these in **Settings → Secrets and variables → Actions**:
 
 ### 4. Deploy
 
-Push to `main` to deploy to production, or `staging` for GitHub Pages preview.
+Push to `main` to deploy to production.
 
 ## Security
 
@@ -222,6 +221,15 @@ Push to `main` to deploy to production, or `staging` for GitHub Pages preview.
 - **API protection**: `.htaccess` blocks direct access to config, libraries, and data files
 - **No secrets in code**: All credentials live in `config.php` (gitignored)
 - **PHP errors**: Logged to server, never displayed to users
+
+## Background Texture
+
+The site uses an SVG `feTurbulence` fractal noise filter to create a subtle **painted plaster/concrete wall texture** across the entire page. This gives the background an organic, slightly rough surface feel — like real paint on a concrete or stucco wall — rather than a flat digital color.
+
+- Applied globally via `body::before` (covers all sections)
+- Separately applied to `#main-nav::after` and `.section-footer::after` to ensure coverage on elements with their own stacking contexts
+- Uses `pointer-events: none` so it never blocks interaction
+- Tunable via `opacity` (currently `0.45`) and `baseFrequency` for grain coarseness
 
 ## Color Palette
 
