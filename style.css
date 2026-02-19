@@ -41,35 +41,17 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-/* Subtle paper / parchment texture overlay */
+/* Subtle painted-wall / plaster texture overlay (SVG noise) */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background-image:
-    /* fine fibrous grain */
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(180, 160, 140, 0.018) 2px,
-      rgba(180, 160, 140, 0.018) 3px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 3px,
-      rgba(160, 140, 120, 0.015) 3px,
-      rgba(160, 140, 120, 0.015) 4px
-    ),
-    /* soft mottled patches */
-    radial-gradient(ellipse 600px 400px at 20% 30%, rgba(200, 180, 160, 0.06), transparent),
-    radial-gradient(ellipse 500px 500px at 75% 60%, rgba(190, 170, 150, 0.05), transparent),
-    radial-gradient(ellipse 400px 300px at 50% 80%, rgba(180, 160, 140, 0.04), transparent),
-    radial-gradient(ellipse 300px 250px at 10% 70%, rgba(195, 175, 155, 0.045), transparent),
-    radial-gradient(ellipse 350px 400px at 85% 20%, rgba(185, 165, 145, 0.04), transparent);
+  opacity: 0.35;
+  filter: contrast(170%) brightness(1000%);
+  background:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
 }
 img, video { max-width: 100%; display: block; }
 a { color: var(--sage-dark); text-decoration: none; }
