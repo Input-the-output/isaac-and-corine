@@ -98,9 +98,9 @@ if (empty($name) || strlen($name) < 2 || strlen($name) > 100) {
     exit;
 }
 
-// Sanitize — strip tags, allow only letters, spaces, hyphens, apostrophes
+// Sanitize — strip tags, allow only letters, digits, spaces, hyphens, apostrophes
 $name = strip_tags($name);
-if (!preg_match('/^[\p{L}\s\'\-\.]+$/u', $name)) {
+if (!preg_match('/^[\p{L}\d\s\'\-\.]+$/u', $name)) {
     http_response_code(400);
     echo json_encode(['error' => 'Please enter a valid name.']);
     exit;
