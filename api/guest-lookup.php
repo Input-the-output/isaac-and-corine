@@ -37,10 +37,11 @@ if (!is_dir($rateDir)) {
 $ip = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 $rateFile = $rateDir . md5($ip) . '.json';
 $rateData = file_exists($rateFile) ? json_decode(file_get_contents($rateFile), true) : [];
+if (!is_array($rateData)) $rateData = [];
 $now = time();
 // Clean old entries (older than 60s)
 $rateData = array_filter($rateData, function ($ts) use ($now) {
-    return ($now - $ts) < 60;
+    return is_int($ts) && ($now - $ts) < 60;
 });
 if (count($rateData) >= ($config['security']['rate_limit_rpm'] ?? 10)) {
     http_response_code(429);
