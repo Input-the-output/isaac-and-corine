@@ -710,7 +710,7 @@
               "X-RSVP-Token": data.token
             },
             body: JSON.stringify({
-              guest_id: currentGuest._id,
+              guest_id: currentGuest.id,
               name: currentGuest.name,
               plus_one_name: currentGuest.plus_one_name || null,
               attending: attending.value

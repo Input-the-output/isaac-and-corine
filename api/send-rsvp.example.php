@@ -6,7 +6,7 @@
  * Body: { "guest_id": "...", "name": "...", "plus_one_name": "...", "attending": "yes|no" }
  * Headers: X-RSVP-Token: <token>
  *
- * Updates the guest record in MongoDB and sends a notification email.
+ * Updates the guest record in MySQL and sends a notification email.
  * Copy this file to send-rsvp.php on the server.
  */
 
@@ -102,26 +102,23 @@ if (empty($name) || !in_array($attending, ['yes', 'no'], true)) {
     exit;
 }
 
-// ─── Update guest record in MongoDB ───────────────────────────
-require_once __DIR__ . '/MongoAtlas.php';
-$mongo = new MongoAtlas($config['mongodb']);
+// ─── Update guest record in MySQL ─────────────────────────────
+require_once __DIR__ . '/Database.php';
+$db = new Database($config['mysql']);
 
 $rsvpStatus = $attending === 'yes' ? 'attending' : 'declined';
 
 // Build filter — use guest_id if available, otherwise name + tenant
 $filter = ['tenant_id' => $config['tenant_id']];
 if ($guestId) {
-    $filter['_id'] = MongoAtlas::objectId($guestId);
+    $filter['id'] = (int) $guestId;
 } else {
     $filter['name_lower'] = strtolower($name);
 }
 
-$mongo->updateOne('guests', $filter, [
-    '$set' => [
-        'rsvp_status' => $rsvpStatus,
-        'rsvp_date'   => date('c'),
-        'updated_at'  => date('c'),
-    ],
+$db->updateOne('guests', $filter, [
+    'rsvp_status' => $rsvpStatus,
+    'rsvp_date'   => date('Y-m-d H:i:s'),
 ]);
 
 // ─── Send notification email ──────────────────────────────────

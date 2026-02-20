@@ -5,15 +5,14 @@
  */
 
 return [
-    // ─── MongoDB Atlas Data API ───────────────────────────────────
-    // 1. Create a free cluster at https://cloud.mongodb.com
-    // 2. Enable the Data API: App Services → Data API → Enable
-    // 3. Create an API key: App Services → Authentication → API Keys
-    'mongodb' => [
-        'data_api_url' => 'https://data.mongodb-api.com/app/YOUR_APP_ID/endpoint/data/v1',
-        'api_key'      => 'YOUR_DATA_API_KEY',
-        'cluster'      => 'Cluster0',
-        'database'     => 'wedding_websites',
+    // ─── MySQL Database ──────────────────────────────────────────
+    // Create the database + user in cPanel → MySQL Databases.
+    // Import schema.sql via phpMyAdmin to create the guests table.
+    'mysql' => [
+        'host'     => 'localhost',
+        'dbname'   => 'YOUR_DB_NAME',
+        'username' => 'YOUR_DB_USER',
+        'password' => 'YOUR_DB_PASSWORD',
     ],
 
     // ─── Tenant ID ────────────────────────────────────────────────

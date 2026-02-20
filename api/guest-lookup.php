@@ -106,22 +106,24 @@ if (!preg_match('/^[\p{L}\d\s\'\-\.]+$/u', $name)) {
     exit;
 }
 
-// ─── MongoDB lookup ───────────────────────────────────────────
-require_once __DIR__ . '/MongoAtlas.php';
-$mongo = new MongoAtlas($config['mongodb']);
+// ─── Database lookup ──────────────────────────────────────────
+require_once __DIR__ . '/Database.php';
+$db = new Database($config['mysql']);
 
 // Case-insensitive search by name within this tenant
-$guest = $mongo->findOne('guests', [
+$guest = $db->findOne('guests', [
     'tenant_id' => $config['tenant_id'],
     'name_lower' => strtolower($name),
 ]);
 
 if (!$guest) {
     // Try partial match (first + last name fuzzy)
-    $guests = $mongo->find('guests', [
-        'tenant_id' => $config['tenant_id'],
-        'name_lower' => ['$regex' => preg_quote(strtolower($name), '/'), '$options' => 'i'],
-    ]);
+    $guests = $db->findLike(
+        'guests',
+        ['tenant_id' => $config['tenant_id']],
+        'name_lower',
+        '%' . strtolower($name) . '%'
+    );
 
     if (count($guests) === 1) {
         $guest = $guests[0];
@@ -140,9 +142,9 @@ if (!$guest) {
 // Return guest data (only safe fields)
 echo json_encode([
     'guest' => [
-        '_id'            => $guest['_id'] ?? null,
+        'id'             => $guest['id'] ?? null,
         'name'           => $guest['name'] ?? '',
-        'plus_one'       => $guest['plus_one'] ?? false,
+        'plus_one'       => (bool) ($guest['plus_one'] ?? false),
         'plus_one_name'  => $guest['plus_one_name'] ?? null,
         'rsvp_status'    => $guest['rsvp_status'] ?? 'pending',
     ],

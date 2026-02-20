@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php
 /**
- * Seed 5 test guest accounts into MongoDB.
+ * Seed 5 test guest accounts into MySQL.
  * Run once via CLI: php api/seed-test-guests.php
  */
 
@@ -12,17 +12,15 @@ if (!file_exists($configPath)) {
 }
 $config = require $configPath;
 
-require_once __DIR__ . '/MongoAtlas.php';
-$mongo = new MongoAtlas($config['mongodb']);
-
-$now = date('c');
+require_once __DIR__ . '/Database.php';
+$db = new Database($config['mysql']);
 
 for ($i = 1; $i <= 5; $i++) {
     $name = "Georges ITO test {$i}";
     $nameLower = strtolower($name);
 
     // Check if already exists
-    $existing = $mongo->findOne('guests', [
+    $existing = $db->findOne('guests', [
         'tenant_id'  => $config['tenant_id'],
         'name_lower' => $nameLower,
     ]);
@@ -32,19 +30,15 @@ for ($i = 1; $i <= 5; $i++) {
         continue;
     }
 
-    $doc = [
+    $id = $db->insertOne('guests', [
         'tenant_id'    => $config['tenant_id'],
         'name'         => $name,
         'name_lower'   => $nameLower,
-        'plus_one'     => ($i === 1), // Only test 1 gets a plus-one
+        'plus_one'     => ($i === 1) ? 1 : 0,
         'plus_one_name'=> ($i === 1) ? 'Test Plus One' : null,
         'rsvp_status'  => 'pending',
-        'rsvp_date'    => null,
-        'created_at'   => $now,
-        'updated_at'   => $now,
-    ];
+    ]);
 
-    $id = $mongo->insertOne('guests', $doc);
     echo "Inserted: {$name} (id: {$id})\n";
 }
 
