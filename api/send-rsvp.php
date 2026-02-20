@@ -136,7 +136,13 @@ try {
     $mail->Port       = $config['mail']['port'];
 
     $mail->setFrom($config['mail']['from_email'], $config['mail']['from_name']);
-    $mail->addAddress($config['mail']['to_email'], $config['mail']['to_name']);
+
+    // Support single or multiple recipients
+    $toEmails = (array) $config['mail']['to_email'];
+    $toNames  = (array) ($config['mail']['to_name'] ?? '');
+    foreach ($toEmails as $i => $email) {
+        $mail->addAddress($email, $toNames[$i] ?? '');
+    }
 
     $statusLabel = $attending === 'yes' ? 'Joyfully Attending' : 'Regretfully Declining';
     $plusOneInfo = $plusOneName ? "\nPlus One: {$plusOneName}" : '';
