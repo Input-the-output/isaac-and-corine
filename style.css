@@ -34,6 +34,7 @@
 html { scroll-behavior: smooth; color-scheme: light only; scroll-padding-top: 60px; }
 body {
   font-family: var(--font-body);
+  font-size: 1.1rem;
   color: var(--foreground);
   background: var(--background);
   line-height: 1.7;
@@ -730,7 +731,7 @@ body.page-leaving {
   width: 120px;
   text-align: right;
   font-family: var(--font-display);
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   color: var(--sage);
   letter-spacing: 0.05em;
@@ -768,7 +769,7 @@ body.page-leaving {
 @media (max-width: 600px) {
   .timeline { padding-left: 100px; }
   .timeline::before { left: 90px; }
-  .timeline-time { left: -100px; width: 80px; font-size: 0.85rem; }
+  .timeline-time { left: -100px; width: 80px; font-size: 1.05rem; }
   .timeline-dot { left: -14px; }
 }
 
