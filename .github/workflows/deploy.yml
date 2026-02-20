@@ -18,6 +18,15 @@ jobs:
             sed -i -E "s/(\.(css|js|mp4|m4a|gif|jpg|png|webp))(\")/\1?v=${SHORT_SHA}\3/g" "$f"
           done
 
+      - name: Install PHPMailer
+        run: |
+          mkdir -p api/PHPMailer-7.0.2/src
+          curl -sL https://github.com/PHPMailer/PHPMailer/archive/refs/tags/v7.0.2.tar.gz -o /tmp/phpmailer.tar.gz
+          tar xzf /tmp/phpmailer.tar.gz -C /tmp
+          cp /tmp/PHPMailer-7.0.2/src/PHPMailer.php api/PHPMailer-7.0.2/src/
+          cp /tmp/PHPMailer-7.0.2/src/SMTP.php api/PHPMailer-7.0.2/src/
+          cp /tmp/PHPMailer-7.0.2/src/Exception.php api/PHPMailer-7.0.2/src/
+
       - name: Setup SSH agent
         uses: webfactory/ssh-agent@v0.9.0
         with:
@@ -34,10 +43,17 @@ jobs:
           rsync -avz --delete \
             --exclude '.git' \
             --exclude '.github' \
-            --exclude 'api/send-rsvp.php' \
-            --exclude 'api/token.php' \
             --exclude 'api/config.php' \
             --exclude 'api/rate_limits/' \
-            --exclude 'api/PHPMailer-7.0.2/' \
             -e "ssh -p 21098" \
             ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}
+
+      - name: Deploy API config
+        env:
+          CONFIG_PHP: ${{ secrets.CONFIG_PHP }}
+        run: |
+          if [ -n "$CONFIG_PHP" ]; then
+            printenv CONFIG_PHP > /tmp/config.php
+            scp -P 21098 /tmp/config.php "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/api/config.php"
+            rm -f /tmp/config.php
+          fi

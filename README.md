@@ -37,10 +37,11 @@ Live at **https://isaacandcorine.com/**
 │   ├── config.php           # Actual config with secrets (GITIGNORED)
 │   ├── MongoAtlas.php       # MongoDB Atlas Data API helper class
 │   ├── guest-lookup.php     # Guest name lookup endpoint
-│   ├── token.php            # CSRF token generator (GITIGNORED)
-│   ├── token.example.php    # Token generator template (committed)
-│   ├── send-rsvp.php        # RSVP submission handler (GITIGNORED)
-│   ├── send-rsvp.example.php# RSVP handler template (committed)
+│   ├── token.php            # CSRF token generator
+│   ├── token.example.php    # Token generator template
+│   ├── send-rsvp.php        # RSVP submission handler
+│   ├── send-rsvp.example.php# RSVP handler template
+│   ├── seed-test-guests.php # CLI script to insert test guests
 │   ├── .htaccess            # API-level security rules
 │   ├── rate_limits/         # Auto-created rate limit data (GITIGNORED)
 │   └── PHPMailer-7.0.2/     # PHPMailer library (GITIGNORED)
@@ -181,22 +182,7 @@ All the API code filters by `tenant_id` automatically — no cross-site data lea
 8. Add indexes as recommended above
 9. Insert your guest list (see "Adding Guests" above)
 
-### 2. Server Setup (Namecheap)
-
-1. Copy `api/config.example.php` → `api/config.php`
-2. Fill in your MongoDB Atlas Data API URL, API key, and cluster name
-3. Fill in your SMTP credentials
-4. Set a strong random string for `token_secret` (64+ characters)
-5. Copy `api/token.example.php` → `api/token.php`
-6. Copy `api/send-rsvp.example.php` → `api/send-rsvp.php`
-7. Download [PHPMailer 7.0.2](https://github.com/PHPMailer/PHPMailer/releases/tag/v7.0.2) and extract to `api/PHPMailer-7.0.2/`
-8. Set directory permissions:
-   ```bash
-   chmod 700 api/rate_limits/
-   chmod 600 api/config.php
-   ```
-
-### 3. GitHub Secrets (for deployment)
+### 2. GitHub Secrets (for deployment)
 
 Set these in **Settings → Secrets and variables → Actions**:
 
@@ -206,10 +192,27 @@ Set these in **Settings → Secrets and variables → Actions**:
 | `SSH_HOST` | Server hostname |
 | `SSH_USER` | SSH username |
 | `DEPLOY_PATH` | Remote path (e.g., `/home/user/public_html/`) |
+| `CONFIG_PHP` | Entire contents of `api/config.php` (credentials) |
+
+The deployment workflow automatically:
+- Deploys `token.php`, `send-rsvp.php`, and `guest-lookup.php` via rsync
+- Downloads and installs PHPMailer 7.0.2 (only the 3 required source files)
+- Creates `api/config.php` on the server from the `CONFIG_PHP` secret via scp
+- Preserves `api/rate_limits/` across deploys (excluded from rsync `--delete`)
+
+### 3. Adding Guests
+
+You can seed test guests via CLI (requires `config.php` with valid MongoDB credentials):
+
+```bash
+php api/seed-test-guests.php
+```
+
+Or add guests through MongoDB Atlas UI / `mongosh` (see below).
 
 ### 4. Deploy
 
-Push to `main` to deploy to production.
+Push to `main` to deploy to production. Guest data lives in MongoDB Atlas and is never affected by deployments.
 
 ## Security
 
@@ -229,7 +232,8 @@ The site uses an SVG `feTurbulence` fractal noise filter to create a subtle **pa
 - Applied globally via `body::before` (covers all sections)
 - Separately applied to `#main-nav::after` and `.section-footer::after` to ensure coverage on elements with their own stacking contexts
 - Uses `pointer-events: none` so it never blocks interaction
-- Tunable via `opacity` (currently `0.45`) and `baseFrequency` for grain coarseness
+- Tunable via `opacity` (currently `0.35`) and `baseFrequency` for grain coarseness
+- Text, buttons, and interactive elements render cleanly above the texture via `isolation: isolate` on body and `z-index: -1` on the texture layer
 
 ## Color Palette
 
