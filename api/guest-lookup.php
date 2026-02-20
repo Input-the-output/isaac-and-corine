@@ -117,7 +117,7 @@ $guest = $db->findOne('guests', [
 ]);
 
 if (!$guest) {
-    // Try partial match (first + last name fuzzy)
+    // Step 2: LIKE substring match
     $guests = $db->findLike(
         'guests',
         ['tenant_id' => $config['tenant_id']],
@@ -128,7 +128,44 @@ if (!$guest) {
     if (count($guests) === 1) {
         $guest = $guests[0];
     } elseif (count($guests) > 1) {
-        // Multiple matches — ask user to be more specific
+        echo json_encode([
+            'error' => 'Multiple guests found. Please enter your full name as it appears on your invitation.',
+        ]);
+        exit;
+    }
+}
+
+if (!$guest) {
+    // Step 3: Fuzzy match using soundex (handles Georges/George, Mariam/Maryam, Elie/Eli)
+    $inputWords = preg_split('/[\s\-]+/', strtolower($name));
+    $inputSoundex = array_map('soundex', $inputWords);
+
+    $allGuests = $db->find('guests', ['tenant_id' => $config['tenant_id']]);
+    $fuzzyMatches = [];
+
+    foreach ($allGuests as $g) {
+        $guestWords = preg_split('/[\s\-]+/', $g['name_lower']);
+        $guestSoundex = array_map('soundex', $guestWords);
+
+        // Every input word must have a soundex match in the guest name
+        $matched = 0;
+        foreach ($inputSoundex as $is) {
+            foreach ($guestSoundex as $gs) {
+                if ($is === $gs) {
+                    $matched++;
+                    break;
+                }
+            }
+        }
+
+        if ($matched === count($inputSoundex) && count($inputSoundex) > 0) {
+            $fuzzyMatches[] = $g;
+        }
+    }
+
+    if (count($fuzzyMatches) === 1) {
+        $guest = $fuzzyMatches[0];
+    } elseif (count($fuzzyMatches) > 1) {
         echo json_encode([
             'error' => 'Multiple guests found. Please enter your full name as it appears on your invitation.',
         ]);

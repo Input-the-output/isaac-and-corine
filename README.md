@@ -28,8 +28,6 @@ Live at **https://isaacandcorine.com/**
 │   ├── song.m4a             # Background music
 │   ├── ball-dance.webp      # Schedule & footer image
 │   ├── confetti-CrGrT4ka.gif
-│   ├── flowers/             # Decorative watercolor flowers
-│   ├── butterflies/         # Decorative butterflies
 │   └── destinations/        # Discover Lebanon images
 │
 ├── api/
