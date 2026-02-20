@@ -40,15 +40,16 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   position: relative;
+  isolation: isolate;
 }
 /* Subtle painted-wall / plaster texture overlay (SVG noise) */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 1;
+  z-index: -1;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.35;
   filter: contrast(170%) brightness(1000%);
   background:
     url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
@@ -95,6 +96,7 @@ body.page-leaving {
    ============================ */
 .section-hero {
   position: relative;
+  z-index: 2;
   width: 100%;
   min-height: calc(100vh - 56px);
   margin-top: 56px;
@@ -242,13 +244,16 @@ body.page-leaving {
   content: '';
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.35;
   filter: contrast(170%) brightness(1000%);
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
 }
 /* nav-hidden removed — nav is always visible */
 .nav-inner {
+  position: relative;
+  z-index: 1;
   max-width: 1100px;
   margin: 0 auto;
   padding: 0.75rem 1.5rem;
@@ -311,6 +316,7 @@ body.page-leaving {
   #nav-hamburger { display: flex; }
   #nav-links {
     position: fixed;
+    z-index: 1;
     top: 56px; left: 0; right: 0;
     background: rgba(239, 223, 213, 0.97);
     backdrop-filter: blur(12px);
@@ -344,6 +350,7 @@ body.page-leaving {
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 2;
   overflow: hidden;
 }
 .section-alt { background: var(--cream); }
@@ -1023,6 +1030,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 .discover-page { padding-top: 56px; }
 .discover-hero {
   position: relative;
+  z-index: 2;
   width: 100%;
   height: 50vh;
   min-height: 300px;
@@ -1288,6 +1296,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
    ============================ */
 .section-footer {
   position: relative;
+  z-index: 2;
   text-align: center;
   padding: 6rem 1.5rem 4rem;
   overflow: hidden;
@@ -1323,7 +1332,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  opacity: 0.45;
+  opacity: 0.35;
   filter: contrast(170%) brightness(1000%);
   background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='512' height='512' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
 }
