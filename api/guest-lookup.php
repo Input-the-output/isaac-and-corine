@@ -177,12 +177,15 @@ if (!$guest) {
 }
 
 // Return guest data (only safe fields)
+$rsvpStatus = $guest['rsvp_status'] ?? 'pending';
 echo json_encode([
     'guest' => [
-        'id'             => $guest['id'] ?? null,
-        'name'           => $guest['name'] ?? '',
-        'plus_one'       => (bool) ($guest['plus_one'] ?? false),
-        'plus_one_name'  => $guest['plus_one_name'] ?? null,
-        'rsvp_status'    => $guest['rsvp_status'] ?? 'pending',
+        'id'                => $guest['id'] ?? null,
+        'name'              => $guest['name'] ?? '',
+        'plus_one'          => (bool) ($guest['plus_one'] ?? false),
+        'plus_one_name'     => $guest['plus_one_name'] ?? null,
+        'prewedding'        => (bool) ($guest['prewedding'] ?? false),
+        'rsvp_status'       => $rsvpStatus,
+        'already_submitted' => $rsvpStatus !== 'pending',
     ],
 ]);

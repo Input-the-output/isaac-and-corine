@@ -59,7 +59,7 @@ Live at **https://isaacandcorine.com/**
 7. **Travel & Stay** — Hotels, restaurants (accordion categories), tips
 8. **Discover Lebanon** — Mosaic of 11 destinations (in-page toggle)
 9. **Gifts** — Wedding registry with reveal button
-10. **RSVP** — Guest lookup by name → shows invitation card with +1 → confirm
+10. **RSVP** — Guest lookup by name → back button, wedding & pre-wedding RSVPs, +1 with name input & RSVPs, re-submission prevention
 
 ## MySQL Database
 
@@ -77,6 +77,10 @@ The database uses a **tenant model** where each wedding website has its own `ten
 | `name_lower` | VARCHAR(255) | Lowercase version of name (used for lookup) |
 | `plus_one` | TINYINT(1) | Whether the guest has a +1 (0 or 1) |
 | `plus_one_name` | VARCHAR(255) | Name of the +1 guest (nullable) |
+| `prewedding` | TINYINT(1) | Whether the guest is invited to the pre-wedding party (0 or 1) |
+| `prewedding_status` | ENUM | `"pending"`, `"attending"`, or `"declined"` for pre-wedding |
+| `plus_one_status` | ENUM | `"pending"`, `"attending"`, or `"declined"` for +1 wedding |
+| `plus_one_prewedding_status` | ENUM | `"pending"`, `"attending"`, or `"declined"` for +1 pre-wedding |
 | `rsvp_status` | ENUM | `"pending"`, `"attending"`, or `"declined"` |
 | `rsvp_date` | DATETIME | When RSVP was submitted (nullable) |
 | `created_at` | DATETIME | Auto-set on insert |
@@ -89,6 +93,23 @@ The full schema is in `schema.sql`. Run it in phpMyAdmin or via CLI:
 ```bash
 mysql -u USER -p DB_NAME < schema.sql
 ```
+
+### RSVP Form Features
+
+The RSVP form supports multi-event RSVPs with plus-one management:
+
+- **Wedding RSVP** — All guests choose attending/declining for the wedding celebration
+- **Pre-Wedding RSVP** — Guests with `prewedding=1` also see a pre-wedding party choice
+- **Plus-One Section** — Guests with `plus_one=1` see a section to enter their +1's name and RSVP for both events
+- **Green Selection** — Radio button selections highlight in green for clear visual feedback
+- **Back Button** — Returns to the name lookup step (resets the form)
+- **Re-submission Prevention** — If a guest has already submitted (rsvp_status != 'pending'), they see an "Already Submitted" message instead of the form
+- **Confetti** — Only triggers when the guest selects "Attending" for the wedding
+- **Email Notification** — Sends a detailed email with all RSVP choices (wedding, pre-wedding, +1)
+
+### Migration: Adding Pre-Wedding Columns
+
+If the table already exists, run the ALTER TABLE and UPDATE statements found at the bottom of `schema.sql` in phpMyAdmin. These add the 4 new columns and set `prewedding=1` for the 112 pre-wedding invitees (46 Corine's friends + 44 Isaac's friends + 22 parents).
 
 ### Adding Guests
 

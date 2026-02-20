@@ -547,36 +547,122 @@
 
           <!-- Step 2: Confirm Attendance -->
           <div id="rsvp-confirm" class="rsvp-confirm hidden">
+            <button type="button" id="rsvp-back-btn" class="rsvp-back-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Back
+            </button>
+
             <div class="rsvp-guest-card fade-in">
               <div class="rsvp-guest-card-inner">
                 <div class="ornament">&#9825;</div>
                 <h3 id="rsvp-guest-name" class="rsvp-card-name"></h3>
-                <div id="rsvp-plus-one-section" class="rsvp-plus-one hidden">
-                  <p class="rsvp-plus-label">&amp;</p>
-                  <p id="rsvp-plus-one-name" class="rsvp-plus-name"></p>
-                </div>
                 <div class="ornament">&#10022;</div>
               </div>
             </div>
 
             <div class="rsvp-form">
+              <!-- Your RSVP -->
+              <p class="rsvp-section-label">Your RSVP</p>
+
               <div class="form-group">
-                <label>Will you be attending?</label>
+                <label>Wedding Celebration</label>
                 <div class="radio-group">
-                  <label class="radio-label" id="radio-yes">
+                  <label class="radio-label">
                     <input type="radio" name="attending" value="yes">
                     <span class="radio-icon">&#10003;</span>
                     <span>Joyfully<br>Attending</span>
                   </label>
-                  <label class="radio-label" id="radio-no">
+                  <label class="radio-label">
                     <input type="radio" name="attending" value="no">
                     <span class="radio-icon">&#10007;</span>
                     <span>Regretfully<br>Declining</span>
                   </label>
                 </div>
               </div>
+
+              <div id="rsvp-prewedding-section" class="form-group hidden">
+                <label>Pre-Wedding Party</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="prewedding_attending" value="yes">
+                    <span class="radio-icon">&#10003;</span>
+                    <span>Joyfully<br>Attending</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="prewedding_attending" value="no">
+                    <span class="radio-icon">&#10007;</span>
+                    <span>Regretfully<br>Declining</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Plus One Section -->
+              <div id="rsvp-plusone-section" class="hidden">
+                <div class="rsvp-divider">
+                  <span class="rsvp-divider-line"></span>
+                  <span class="rsvp-divider-icon">&#10022;</span>
+                  <span class="rsvp-divider-line"></span>
+                </div>
+
+                <p class="rsvp-section-label">Your Plus One</p>
+
+                <div class="rsvp-plus-one-input">
+                  <label for="rsvp-plusone-name">Full Name</label>
+                  <input type="text" id="rsvp-plusone-name" placeholder="Enter your plus one's name" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                  <label>Wedding Celebration</label>
+                  <div class="radio-group">
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_attending" value="yes">
+                      <span class="radio-icon">&#10003;</span>
+                      <span>Attending</span>
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_attending" value="no">
+                      <span class="radio-icon">&#10007;</span>
+                      <span>Declining</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div id="rsvp-plusone-prewedding-section" class="form-group hidden">
+                  <label>Pre-Wedding Party</label>
+                  <div class="radio-group">
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_prewedding_attending" value="yes">
+                      <span class="radio-icon">&#10003;</span>
+                      <span>Attending</span>
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_prewedding_attending" value="no">
+                      <span class="radio-icon">&#10007;</span>
+                      <span>Declining</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
               <button type="button" id="rsvp-submit-btn" class="btn btn-primary">Send Confirmation</button>
             </div>
+          </div>
+
+          <!-- Step 2b: Already Submitted -->
+          <div id="rsvp-already-submitted" class="rsvp-already-submitted hidden">
+            <button type="button" id="rsvp-already-back-btn" class="rsvp-back-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              Back
+            </button>
+            <div class="rsvp-guest-card fade-in">
+              <div class="rsvp-guest-card-inner">
+                <div class="ornament">&#9825;</div>
+                <h3 id="rsvp-already-guest-name" class="rsvp-card-name"></h3>
+                <div class="ornament">&#10022;</div>
+              </div>
+            </div>
+            <h3>Already Submitted</h3>
+            <p>Your RSVP has already been recorded. If you need to make changes, please contact us directly.</p>
           </div>
 
           <!-- Step 3: Success -->

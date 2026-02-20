@@ -1236,10 +1236,10 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   line-height: 1;
 }
 .radio-label.selected {
-  border-color: var(--sage-dark);
-  background: rgba(88, 112, 66, 0.06);
-  color: var(--sage-dark);
-  box-shadow: 0 0 0 3px rgba(88, 112, 66, 0.1);
+  border-color: #4a8c3f;
+  background: rgba(74, 140, 63, 0.08);
+  color: #3d7a33;
+  box-shadow: 0 0 0 3px rgba(74, 140, 63, 0.15);
 }
 @media (max-width: 400px) {
   .radio-group { grid-template-columns: 1fr; }
@@ -1660,6 +1660,107 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   color: var(--sage-dark);
   line-height: 1.2;
 }
+/* RSVP Back button */
+.rsvp-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--muted-fg);
+  padding: 0.5rem 0;
+  margin-bottom: 1rem;
+  transition: color 0.3s;
+}
+.rsvp-back-btn:hover { color: var(--sage-dark); }
+.rsvp-back-btn svg { width: 18px; height: 18px; }
+
+/* RSVP Section labels */
+.rsvp-section-label {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sage-dark);
+  text-align: center;
+  margin: 1.5rem 0 1rem;
+}
+
+/* RSVP Divider before +1 section */
+.rsvp-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem 0 1rem;
+}
+.rsvp-divider-line {
+  display: inline-block;
+  width: 60px;
+  height: 1px;
+  background: var(--border);
+}
+.rsvp-divider-icon {
+  font-size: 1rem;
+  color: var(--sage);
+}
+
+/* RSVP Already submitted message */
+.rsvp-already-submitted {
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  animation: fadeInUp 0.6s ease;
+}
+.rsvp-already-submitted h3 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  color: var(--sage-dark);
+  margin-bottom: 0.75rem;
+}
+.rsvp-already-submitted p {
+  font-family: var(--font-body);
+  color: var(--muted-fg);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Plus-one name input inside RSVP form */
+.rsvp-plus-one-input {
+  margin-bottom: 1rem;
+}
+.rsvp-plus-one-input label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--sage-dark);
+  margin-bottom: 0.4rem;
+}
+.rsvp-plus-one-input input {
+  width: 100%;
+  padding: 0.65rem 0.9rem;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--foreground);
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.rsvp-plus-one-input input:focus {
+  border-color: var(--sage);
+  box-shadow: 0 0 0 3px rgba(169, 180, 148, 0.2);
+}
+
 @media (max-width: 480px) {
   .rsvp-card-name { font-size: 2.2rem; }
   .rsvp-plus-name { font-size: 1.8rem; }

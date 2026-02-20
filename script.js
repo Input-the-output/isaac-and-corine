@@ -567,16 +567,23 @@
   }
 
   /* ---------- Radio card selection ---------- */
-  document.querySelectorAll(".radio-label").forEach(function (label) {
-    var radio = label.querySelector('input[type="radio"]');
-    if (!radio) return;
-    radio.addEventListener("change", function () {
-      document.querySelectorAll(".radio-label").forEach(function (l) {
-        l.classList.remove("selected");
+  function initRadioSelections(container) {
+    container.querySelectorAll(".radio-group").forEach(function (group) {
+      group.querySelectorAll(".radio-label").forEach(function (label) {
+        var radio = label.querySelector('input[type="radio"]');
+        if (!radio) return;
+        radio.addEventListener("change", function () {
+          // Only clear selections within the same radio group
+          group.querySelectorAll(".radio-label").forEach(function (l) {
+            l.classList.remove("selected");
+          });
+          label.classList.add("selected");
+        });
       });
-      label.classList.add("selected");
     });
-  });
+  }
+  // Initialize for any radio groups already in the DOM
+  initRadioSelections(document);
 
   /* ---------- Confetti overlay ---------- */
   function showConfetti() {
@@ -593,19 +600,59 @@
   }
 
   /* ---------- RSVP — Guest Lookup & Confirm ---------- */
-  var rsvpLookup     = document.getElementById("rsvp-lookup");
-  var rsvpSearch     = document.getElementById("rsvp-search");
-  var rsvpFindBtn    = document.getElementById("rsvp-find-btn");
-  var rsvpLookupErr  = document.getElementById("rsvp-lookup-error");
-  var rsvpConfirm    = document.getElementById("rsvp-confirm");
-  var rsvpGuestName  = document.getElementById("rsvp-guest-name");
-  var rsvpPlusOneSec = document.getElementById("rsvp-plus-one-section");
-  var rsvpPlusOneName= document.getElementById("rsvp-plus-one-name");
-  var rsvpSubmitBtn  = document.getElementById("rsvp-submit-btn");
-  var rsvpSuccess    = document.getElementById("rsvp-success");
-  var rsvpMessage    = document.getElementById("rsvp-success-message");
+  var rsvpLookup       = document.getElementById("rsvp-lookup");
+  var rsvpSearch       = document.getElementById("rsvp-search");
+  var rsvpFindBtn      = document.getElementById("rsvp-find-btn");
+  var rsvpLookupErr    = document.getElementById("rsvp-lookup-error");
+  var rsvpConfirm      = document.getElementById("rsvp-confirm");
+  var rsvpGuestName    = document.getElementById("rsvp-guest-name");
+  var rsvpSubmitBtn    = document.getElementById("rsvp-submit-btn");
+  var rsvpSuccess      = document.getElementById("rsvp-success");
+  var rsvpMessage      = document.getElementById("rsvp-success-message");
+  var rsvpBackBtn      = document.getElementById("rsvp-back-btn");
+  var rsvpAlreadySubmitted = document.getElementById("rsvp-already-submitted");
+  var rsvpAlreadyBackBtn   = document.getElementById("rsvp-already-back-btn");
+  var rsvpAlreadyGuestName = document.getElementById("rsvp-already-guest-name");
+  var rsvpPreweddingSec    = document.getElementById("rsvp-prewedding-section");
+  var rsvpPlusoneSec       = document.getElementById("rsvp-plusone-section");
+  var rsvpPlusoneNameInput = document.getElementById("rsvp-plusone-name");
+  var rsvpPlusonePreweddingSec = document.getElementById("rsvp-plusone-prewedding-section");
 
   var currentGuest = null;
+
+  // Reset form to initial state
+  function resetRsvpForm() {
+    // Clear radio selections
+    rsvpConfirm.querySelectorAll('input[type="radio"]').forEach(function (r) {
+      r.checked = false;
+    });
+    rsvpConfirm.querySelectorAll(".radio-label").forEach(function (l) {
+      l.classList.remove("selected");
+    });
+    // Clear plus-one name
+    if (rsvpPlusoneNameInput) rsvpPlusoneNameInput.value = "";
+    // Hide conditional sections
+    rsvpPreweddingSec.classList.add("hidden");
+    rsvpPlusoneSec.classList.add("hidden");
+    rsvpPlusonePreweddingSec.classList.add("hidden");
+    // Reset button
+    rsvpSubmitBtn.disabled = false;
+    rsvpSubmitBtn.textContent = "Send Confirmation";
+    rsvpFindBtn.disabled = false;
+    rsvpFindBtn.textContent = "Find Your Invitation";
+    currentGuest = null;
+  }
+
+  // Back button handler
+  function goBackToLookup() {
+    rsvpConfirm.classList.add("hidden");
+    rsvpAlreadySubmitted.classList.add("hidden");
+    rsvpLookup.classList.remove("hidden");
+    resetRsvpForm();
+  }
+
+  if (rsvpBackBtn) rsvpBackBtn.addEventListener("click", goBackToLookup);
+  if (rsvpAlreadyBackBtn) rsvpAlreadyBackBtn.addEventListener("click", goBackToLookup);
 
   // Allow pressing Enter in the search field
   if (rsvpSearch) {
@@ -661,19 +708,52 @@
             return;
           }
 
-          // Guest found — show confirmation card
+          // Guest found
           currentGuest = data.guest;
+
+          // Check if already submitted
+          if (data.guest.already_submitted) {
+            rsvpAlreadyGuestName.textContent = data.guest.name;
+            rsvpLookup.classList.add("hidden");
+            rsvpAlreadySubmitted.classList.remove("hidden");
+            rsvpAlreadySubmitted.querySelectorAll(".fade-in").forEach(function (el) {
+              el.classList.add("visible");
+            });
+            return;
+          }
+
+          // Show RSVP form
           rsvpGuestName.textContent = data.guest.name;
 
-          if (data.guest.plus_one && data.guest.plus_one_name) {
-            rsvpPlusOneName.textContent = data.guest.plus_one_name;
-            rsvpPlusOneSec.classList.remove("hidden");
+          // Show/hide pre-wedding section
+          if (data.guest.prewedding) {
+            rsvpPreweddingSec.classList.remove("hidden");
           } else {
-            rsvpPlusOneSec.classList.add("hidden");
+            rsvpPreweddingSec.classList.add("hidden");
+          }
+
+          // Show/hide plus-one section
+          if (data.guest.plus_one) {
+            rsvpPlusoneSec.classList.remove("hidden");
+            // Pre-fill plus-one name if available
+            if (data.guest.plus_one_name && rsvpPlusoneNameInput) {
+              rsvpPlusoneNameInput.value = data.guest.plus_one_name;
+            }
+            // Show/hide plus-one pre-wedding
+            if (data.guest.prewedding) {
+              rsvpPlusonePreweddingSec.classList.remove("hidden");
+            } else {
+              rsvpPlusonePreweddingSec.classList.add("hidden");
+            }
+          } else {
+            rsvpPlusoneSec.classList.add("hidden");
           }
 
           rsvpLookup.classList.add("hidden");
           rsvpConfirm.classList.remove("hidden");
+
+          // Re-initialize radio selections for the newly shown form
+          initRadioSelections(rsvpConfirm);
 
           // Re-observe fade-ins inside the confirm card
           rsvpConfirm.querySelectorAll(".fade-in").forEach(function (el) {
@@ -695,10 +775,47 @@
       var attending = document.querySelector('#rsvp-confirm input[name="attending"]:checked');
       if (!attending) return;
 
+      // Validate pre-wedding selection if visible
+      if (currentGuest.prewedding) {
+        var prewedding = document.querySelector('#rsvp-confirm input[name="prewedding_attending"]:checked');
+        if (!prewedding) return;
+      }
+
+      // Validate plus-one selections if visible
+      if (currentGuest.plus_one) {
+        var plusOneAttending = document.querySelector('#rsvp-confirm input[name="plus_one_attending"]:checked');
+        if (!plusOneAttending) return;
+        if (currentGuest.prewedding) {
+          var plusOnePrewedding = document.querySelector('#rsvp-confirm input[name="plus_one_prewedding_attending"]:checked');
+          if (!plusOnePrewedding) return;
+        }
+      }
+
       var isAttending = attending.value === "yes";
 
       rsvpSubmitBtn.disabled = true;
       rsvpSubmitBtn.textContent = "Sending...";
+
+      // Build submission data
+      var submitData = {
+        guest_id: currentGuest.id,
+        name: currentGuest.name,
+        attending: attending.value
+      };
+
+      // Pre-wedding
+      if (currentGuest.prewedding) {
+        submitData.prewedding_attending = document.querySelector('#rsvp-confirm input[name="prewedding_attending"]:checked').value;
+      }
+
+      // Plus-one
+      if (currentGuest.plus_one) {
+        submitData.plus_one_name = rsvpPlusoneNameInput ? rsvpPlusoneNameInput.value.trim() : "";
+        submitData.plus_one_attending = document.querySelector('#rsvp-confirm input[name="plus_one_attending"]:checked').value;
+        if (currentGuest.prewedding) {
+          submitData.plus_one_prewedding_attending = document.querySelector('#rsvp-confirm input[name="plus_one_prewedding_attending"]:checked').value;
+        }
+      }
 
       fetch("./api/token.php")
         .then(function (res) { return res.json(); })
@@ -709,12 +826,7 @@
               "Content-Type": "application/json",
               "X-RSVP-Token": data.token
             },
-            body: JSON.stringify({
-              guest_id: currentGuest.id,
-              name: currentGuest.name,
-              plus_one_name: currentGuest.plus_one_name || null,
-              attending: attending.value
-            })
+            body: JSON.stringify(submitData)
           });
         })
         .then(function (res) {

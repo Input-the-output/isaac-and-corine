@@ -8,6 +8,10 @@ CREATE TABLE IF NOT EXISTS guests (
     name_lower    VARCHAR(255) NOT NULL,
     plus_one      TINYINT(1)   NOT NULL DEFAULT 0,
     plus_one_name VARCHAR(255) DEFAULT NULL,
+    prewedding    TINYINT(1)   NOT NULL DEFAULT 0,
+    prewedding_status ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending',
+    plus_one_status   ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending',
+    plus_one_prewedding_status ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending',
     rsvp_status   ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending',
     rsvp_date     DATETIME     DEFAULT NULL,
     created_at    DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -264,3 +268,56 @@ INSERT INTO guests (tenant_id, name, name_lower, plus_one, plus_one_name, rsvp_s
 --   Gilbert kids (2), George kids (1), Joyce kids (2), Giselle kids (1)
 -- These 6 children likely attend with their parents.
 -- Add them as individual entries if they need their own RSVP.
+
+-- =====================================================================
+-- Migration: Add pre-wedding and plus-one status columns
+-- Run this ALTER TABLE in phpMyAdmin if the table already exists:
+-- =====================================================================
+-- ALTER TABLE guests
+--   ADD COLUMN prewedding TINYINT(1) NOT NULL DEFAULT 0 AFTER plus_one_name,
+--   ADD COLUMN prewedding_status ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending' AFTER prewedding,
+--   ADD COLUMN plus_one_status ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending' AFTER prewedding_status,
+--   ADD COLUMN plus_one_prewedding_status ENUM('pending','attending','declined') NOT NULL DEFAULT 'pending' AFTER plus_one_status;
+
+-- =====================================================================
+-- Set prewedding=1 for all pre-wedding invitees
+-- Run these UPDATE statements in phpMyAdmin after adding the columns:
+-- =====================================================================
+-- UPDATE guests SET prewedding = 1
+-- WHERE tenant_id = 'isaac-and-corine'
+--   AND name_lower IN (
+--     -- Corine's Friends (46)
+--     'pierre zoghzoghi', 'toufic tager', 'oliver dabar', 'paul-antoine khoury',
+--     'joe sabbagh', 'bruno bakhach', 'malek murr', 'marc akhras',
+--     'philippe zoghzoghi', 'ralph gharios', 'nicolas hassoun', 'georges keyrouz',
+--     'omar farhat', 'ralph khayat', 'michel bejjani', 'chris salamoun',
+--     'ziad chehab', 'joseph merhej', 'roger chaccour', 'iyad achkar',
+--     'pierre-christophe antoun', 'michael soumrani', 'anthony salamoun', 'marc nasr',
+--     'jean paul chidiac', 'carl daou', 'tarek abboud', 'edmond rizk',
+--     'anthony attieh', 'claude zoghzoghi', 'anthony michael', 'cyril irani',
+--     'gio fikani', 'fouad farhat', 'eddy nasr', 'gabriel edde',
+--     'romain ouaiss', 'camil abou farhat', 'elio abou farhat', 'marc zoghzoghi',
+--     'henri saab', 'nour rizk', 'maria abou farhat', 'joanna ziade',
+--     'cynthia braidy', 'luana fakhoury',
+--     -- Isaac's Friends (44)
+--     'christophe karam', 'elie hamouche', 'georges rafi', 'carl assaf',
+--     'george kamar', 'jad makhlouf', 'fayez nohra', 'serge sawma',
+--     'walid rahme', 'marc moukarzel', 'hady rahme', 'rawad abou jaoude',
+--     'remy otayek', 'patrick malek', 'ramzi chamcham', 'luigi irani',
+--     'christopher tamari', 'joseph bejjani', 'elie kareh', 'philippe khoury',
+--     'michel dibo', 'michel jurdak', 'joseph kassab', 'pierre chekrallah',
+--     'paul tabet', 'roy boulos', 'joey nseir', 'nasri chedid',
+--     'edouard haber', 'carl abi rached', 'fleurene daraze', 'yasmina sader',
+--     'karim abou dib', 'tara kanj', 'cyril keyrouz', 'mario noune',
+--     'victor fayad', 'elie chalhoub', 'jad khalaf', 'ryan kanj',
+--     'roland gemayel', 'jad koundakjian', 'lorenzo boustany', 'karl abou zeid',
+--     -- Parents (22)
+--     'rony et wadad araygi', 'jean et carla zoghzoghi', 'tony et randa eid',
+--     'samy et emy rizk', 'assad et rana maalouf', 'michel et marielle mouawad',
+--     'georges et mirla tabet', 'gabriel et paula maalouly', 'nabil et pascale asmar',
+--     'philippe et joselyne maalouf', 'chaaya et rita atallah', 'fady et mireille rouhana',
+--     'maurice et shermine iskandar', 'alfred et june kettaneh', 'marc et gabrielle assouad',
+--     'walid et sandra abou farhat', 'fares et berthe abboud', 'nadim et maria abou dib',
+--     'philippe et josette aramouni', 'philippe et michelle souaid',
+--     'ramzi et therese klink', 'joe et maya hobeiche'
+--   );

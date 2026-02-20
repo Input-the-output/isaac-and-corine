@@ -90,10 +90,13 @@ if ($payload['exp'] < time()) {
 // ─── Parse input ──────────────────────────────────────────────
 $input = json_decode(file_get_contents('php://input'), true);
 
-$guestId      = $input['guest_id'] ?? null;
-$name         = trim(strip_tags($input['name'] ?? ''));
-$plusOneName  = trim(strip_tags($input['plus_one_name'] ?? ''));
-$attending    = $input['attending'] ?? '';
+$guestId                 = $input['guest_id'] ?? null;
+$name                    = trim(strip_tags($input['name'] ?? ''));
+$plusOneName             = trim(strip_tags($input['plus_one_name'] ?? ''));
+$attending               = $input['attending'] ?? '';
+$preweddingAttending     = $input['prewedding_attending'] ?? null;
+$plusOneAttending         = $input['plus_one_attending'] ?? null;
+$plusOnePreweddingAttending = $input['plus_one_prewedding_attending'] ?? null;
 
 if (empty($name) || !in_array($attending, ['yes', 'no'], true)) {
     http_response_code(400);
@@ -107,6 +110,32 @@ $db = new Database($config['mysql']);
 
 $rsvpStatus = $attending === 'yes' ? 'attending' : 'declined';
 
+// Build the update data
+$updateData = [
+    'rsvp_status' => $rsvpStatus,
+    'rsvp_date'   => date('Y-m-d H:i:s'),
+];
+
+// Pre-wedding status
+if ($preweddingAttending !== null) {
+    $updateData['prewedding_status'] = $preweddingAttending === 'yes' ? 'attending' : 'declined';
+}
+
+// Plus-one name
+if (!empty($plusOneName)) {
+    $updateData['plus_one_name'] = $plusOneName;
+}
+
+// Plus-one wedding status
+if ($plusOneAttending !== null) {
+    $updateData['plus_one_status'] = $plusOneAttending === 'yes' ? 'attending' : 'declined';
+}
+
+// Plus-one pre-wedding status
+if ($plusOnePreweddingAttending !== null) {
+    $updateData['plus_one_prewedding_status'] = $plusOnePreweddingAttending === 'yes' ? 'attending' : 'declined';
+}
+
 // Build filter — use guest_id if available, otherwise name + tenant
 $filter = ['tenant_id' => $config['tenant_id']];
 if ($guestId) {
@@ -115,10 +144,7 @@ if ($guestId) {
     $filter['name_lower'] = strtolower($name);
 }
 
-$db->updateOne('guests', $filter, [
-    'rsvp_status' => $rsvpStatus,
-    'rsvp_date'   => date('Y-m-d H:i:s'),
-]);
+$db->updateOne('guests', $filter, $updateData);
 
 // ─── Send notification email ──────────────────────────────────
 try {
@@ -141,20 +167,44 @@ try {
     $toEmails = (array) $config['mail']['to_email'];
     $toNames  = (array) ($config['mail']['to_name'] ?? '');
     foreach ($toEmails as $i => $email) {
+        // Comment out second recipient during testing
+        if ($i > 0) continue;
         $mail->addAddress($email, $toNames[$i] ?? '');
     }
 
     $statusLabel = $attending === 'yes' ? 'Joyfully Attending' : 'Regretfully Declining';
-    $plusOneInfo = $plusOneName ? "\nPlus One: {$plusOneName}" : '';
+
+    // Build detailed email body
+    $body = "New RSVP Received\n"
+        . "──────────────────\n"
+        . "Name: {$name}\n"
+        . "Wedding: {$statusLabel}\n";
+
+    if ($preweddingAttending !== null) {
+        $preweddingLabel = $preweddingAttending === 'yes' ? 'Attending' : 'Declining';
+        $body .= "Pre-Wedding: {$preweddingLabel}\n";
+    }
+
+    if (!empty($plusOneName)) {
+        $body .= "──────────────────\n"
+            . "Plus One: {$plusOneName}\n";
+        if ($plusOneAttending !== null) {
+            $plusOneLabel = $plusOneAttending === 'yes' ? 'Attending' : 'Declining';
+            $body .= "  Wedding: {$plusOneLabel}\n";
+        }
+        if ($plusOnePreweddingAttending !== null) {
+            $plusOnePreweddingLabel = $plusOnePreweddingAttending === 'yes' ? 'Attending' : 'Declining';
+            $body .= "  Pre-Wedding: {$plusOnePreweddingLabel}\n";
+        }
+    }
+
+    $body .= "──────────────────\n"
+        . "Date: " . date('F j, Y g:i A') . "\n"
+        . "──────────────────\n";
 
     $mail->isHTML(false);
     $mail->Subject = "RSVP: {$name} — {$statusLabel}";
-    $mail->Body    = "New RSVP Received\n"
-        . "──────────────────\n"
-        . "Name: {$name}{$plusOneInfo}\n"
-        . "Response: {$statusLabel}\n"
-        . "Date: " . date('F j, Y g:i A') . "\n"
-        . "──────────────────\n";
+    $mail->Body    = $body;
 
     $mail->send();
 } catch (\Exception $e) {
