@@ -553,15 +553,15 @@
   });
 
   /* ---------- Gift reveal button ---------- */
-  var giftBtn  = document.getElementById("gift-reveal-btn");
-  var giftText = document.getElementById("gift-pending-text");
-  if (giftBtn && giftText) {
+  var giftBtn     = document.getElementById("gift-reveal-btn");
+  var giftDetails = document.getElementById("gift-details");
+  if (giftBtn && giftDetails) {
     giftBtn.addEventListener("click", function () {
       giftBtn.classList.add("fade-out");
       setTimeout(function () {
         giftBtn.style.display = "none";
-        giftText.classList.remove("gift-pending-hidden");
-        giftText.classList.add("gift-pending-visible");
+        giftDetails.classList.remove("gift-details-hidden");
+        giftDetails.classList.add("gift-details-visible");
       }, 400);
     });
   }
