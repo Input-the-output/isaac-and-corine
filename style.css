@@ -1765,6 +1765,10 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   border-color: var(--sage);
   box-shadow: 0 0 0 3px rgba(169, 180, 148, 0.2);
 }
+.rsvp-plus-one-input input.input-error {
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.15);
+}
 
 @media (max-width: 480px) {
   .rsvp-card-name { font-size: 2.2rem; }

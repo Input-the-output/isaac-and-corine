@@ -611,6 +611,13 @@
 
   var currentGuest = null;
 
+  // Clear error on plus-one name when typing
+  if (rsvpPlusoneNameInput) {
+    rsvpPlusoneNameInput.addEventListener("input", function () {
+      rsvpPlusoneNameInput.classList.remove("input-error");
+    });
+  }
+
   // Reset form to initial state
   function resetRsvpForm() {
     // Clear radio selections
@@ -621,7 +628,10 @@
       l.classList.remove("selected");
     });
     // Clear plus-one name
-    if (rsvpPlusoneNameInput) rsvpPlusoneNameInput.value = "";
+    if (rsvpPlusoneNameInput) {
+      rsvpPlusoneNameInput.value = "";
+      rsvpPlusoneNameInput.classList.remove("input-error");
+    }
     // Hide conditional sections
     rsvpPreweddingSec.classList.add("hidden");
     rsvpPlusoneSec.classList.add("hidden");
@@ -774,6 +784,14 @@
       if (currentGuest.plus_one) {
         var plusOneAttending = document.querySelector('#rsvp-confirm input[name="plus_one_attending"]:checked');
         if (!plusOneAttending) return;
+        if (plusOneAttending.value === "yes") {
+          var plusOneName = rsvpPlusoneNameInput ? rsvpPlusoneNameInput.value.trim() : "";
+          if (!plusOneName) {
+            rsvpPlusoneNameInput.focus();
+            rsvpPlusoneNameInput.classList.add("input-error");
+            return;
+          }
+        }
         if (currentGuest.prewedding) {
           var plusOnePrewedding = document.querySelector('#rsvp-confirm input[name="plus_one_prewedding_attending"]:checked');
           if (!plusOnePrewedding) return;
