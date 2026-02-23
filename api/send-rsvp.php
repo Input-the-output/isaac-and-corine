@@ -205,9 +205,11 @@ try {
     $mail->Body    = $body;
 
     $mail->send();
+    file_put_contents(__DIR__ . '/mail_debug.log', date('Y-m-d H:i:s') . " SUCCESS: Email sent to " . implode(', ', $toEmails) . "\n", FILE_APPEND);
 } catch (\Exception $e) {
     // Log but don't fail — the RSVP was recorded in the database
     error_log('RSVP mail error: ' . $e->getMessage());
+    file_put_contents(__DIR__ . '/mail_debug.log', date('Y-m-d H:i:s') . " FAILED: " . $e->getMessage() . "\n", FILE_APPEND);
 }
 
 echo json_encode(['success' => true]);
