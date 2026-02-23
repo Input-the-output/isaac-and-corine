@@ -413,7 +413,7 @@ body.page-leaving {
 }
 .invitation-parents {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 500;
   letter-spacing: 0.05em;
   margin: 0.3rem 0;
@@ -422,18 +422,18 @@ body.page-leaving {
   font-family: var(--font-body);
   font-style: italic;
   color: var(--muted-fg);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   margin: 0.6rem 0;
 }
 .invitation-request {
   font-family: var(--font-body);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: var(--muted-fg);
   margin: 1.5rem 0;
   line-height: 1.8;
 }
 .invitation-request-small {
-  font-size: 1.25rem;
+  font-size: 1.125rem;
 }
 
 /* Scene image in section (replaces illustration) */
@@ -466,13 +466,13 @@ body.page-leaving {
 }
 .name-script {
   font-family: var(--font-script);
-  font-size: 6.6rem;
+  font-size: 7.26rem;
   color: var(--sage-dark);
   line-height: 1;
 }
 .name-ampersand {
   font-family: var(--font-display);
-  font-size: 3.1rem;
+  font-size: 3.41rem;
   font-weight: 300;
   color: var(--gold);
   margin: 0 0.75rem;
@@ -499,7 +499,7 @@ body.page-leaving {
 
 .invitation-date {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   margin: 1.5rem 0 1rem;
@@ -507,7 +507,7 @@ body.page-leaving {
 }
 .invitation-detail {
   font-family: var(--font-body);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: var(--muted-fg);
   margin: 0.75rem 0;
   line-height: 1.7;
@@ -517,7 +517,7 @@ body.page-leaving {
 }
 .invitation-venue h3 {
   font-family: var(--font-display);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -526,7 +526,7 @@ body.page-leaving {
 .invitation-venue p {
   font-family: var(--font-body);
   color: var(--muted-fg);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-style: italic;
 }
 
@@ -1539,13 +1539,13 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 @media (max-width: 768px) {
   .section { padding: 4rem 1.25rem; }
   .section-title { font-size: 2rem; }
-  .name-script { font-size: 3.2rem; }
+  .name-script { font-size: 3.52rem; }
 }
 @media (max-width: 480px) {
   .section { padding: 3rem 1rem; }
   .section-title { font-size: 1.6rem; }
-  .name-script { font-size: 2.5rem; }
-  .name-ampersand { font-size: 1.5rem; }
+  .name-script { font-size: 2.75rem; }
+  .name-ampersand { font-size: 1.65rem; }
 }
 
 /* ============================
