@@ -735,10 +735,6 @@
           // Show/hide plus-one section
           if (data.guest.plus_one) {
             rsvpPlusoneSec.classList.remove("hidden");
-            // Pre-fill plus-one name if available
-            if (data.guest.plus_one_name && rsvpPlusoneNameInput) {
-              rsvpPlusoneNameInput.value = data.guest.plus_one_name;
-            }
             // Show/hide plus-one pre-wedding
             if (data.guest.prewedding) {
               rsvpPlusonePreweddingSec.classList.remove("hidden");

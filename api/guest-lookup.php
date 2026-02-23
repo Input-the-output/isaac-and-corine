@@ -136,29 +136,207 @@ if (!$guest) {
 }
 
 if (!$guest) {
-    // Step 3: Fuzzy match using soundex (handles Georges/George, Mariam/Maryam, Elie/Eli)
+    // Step 3: Advanced fuzzy matching
+    // - Alias map for common name variants (handles different first letters Soundex misses)
+    // - Accent/diacritic normalization
+    // - Soundex phonetic matching
+    // - Levenshtein distance for close typos
+    // - "et" couple matching (search by one spouse's name)
+
+    // ── Name variant aliases (bidirectional) ──
+    $aliasMap = [
+        // French/Arabic/English first-letter variants
+        'carl'       => ['karl'],
+        'karl'       => ['carl'],
+        'celine'     => ['seline', 'selene', 'celene'],
+        'seline'     => ['celine'],
+        'javier'     => ['xavier'],
+        'xavier'     => ['javier'],
+        'charbel'    => ['sharbel'],
+        'sharbel'    => ['charbel'],
+        'chadi'      => ['shadi'],
+        'shadi'      => ['chadi'],
+        // Common French/Arabic spelling variants
+        'george'     => ['georges'],
+        'georges'    => ['george'],
+        'elie'       => ['eli', 'ellie', 'ely'],
+        'eli'        => ['elie', 'ellie', 'ely'],
+        'bashir'     => ['bachir', 'beshir', 'beshara'],
+        'bachir'     => ['bashir', 'beshir'],
+        'ghassan'    => ['ghasan', 'gassan'],
+        'ghasan'     => ['ghassan'],
+        'naji'       => ['nagi', 'najy'],
+        'nagi'       => ['naji'],
+        'rami'       => ['ramy'],
+        'ramy'       => ['rami'],
+        'tony'       => ['toni', 'anthony', 'antoine'],
+        'toni'       => ['tony', 'anthony', 'antoine'],
+        'anthony'    => ['tony', 'toni', 'antoine'],
+        'antoine'    => ['tony', 'toni', 'anthony'],
+        'jean'       => ['john', 'johnny'],
+        'john'       => ['jean', 'johnny'],
+        'johnny'     => ['jean', 'john'],
+        'joseph'     => ['joe', 'youssef', 'yousef', 'yusuf'],
+        'joe'        => ['joseph', 'youssef'],
+        'youssef'    => ['joseph', 'joe', 'yousef', 'yusuf'],
+        'yousef'     => ['joseph', 'youssef', 'yusuf'],
+        'pierre'     => ['peter', 'petra', 'boutros'],
+        'peter'      => ['pierre', 'boutros'],
+        'boutros'    => ['pierre', 'peter'],
+        'marie'      => ['maria', 'mary', 'mariam', 'maryam', 'marian'],
+        'maria'      => ['marie', 'mary', 'mariam'],
+        'mary'       => ['marie', 'maria', 'mariam', 'maryam'],
+        'mariam'     => ['marie', 'maria', 'mary', 'maryam'],
+        'maryam'     => ['mariam', 'marie', 'mary'],
+        'lea'        => ['lia', 'leah', 'leia'],
+        'lia'        => ['lea', 'leah', 'leia'],
+        'michel'     => ['michael', 'mikael', 'mikhael'],
+        'michael'    => ['michel', 'mikael', 'mikhael'],
+        'micky'      => ['micki', 'mickey', 'michel', 'michael'],
+        'mickey'     => ['micky', 'micki'],
+        'raymond'    => ['raimond', 'raymon'],
+        'nadim'      => ['nadeem'],
+        'nadeem'     => ['nadim'],
+        'nada'       => ['nadah'],
+        'fouad'      => ['foad', 'fuad', 'fouaad'],
+        'fuad'       => ['fouad', 'foad'],
+        'ibrahim'    => ['abraham', 'brahim'],
+        'abraham'    => ['ibrahim', 'brahim'],
+        'walid'      => ['waleed', 'oualid'],
+        'waleed'     => ['walid'],
+        'jacques'    => ['jack', 'jak'],
+        'jack'       => ['jacques'],
+        'elias'      => ['ilias', 'elyas', 'ilyas'],
+        'ilias'      => ['elias', 'elyas'],
+        'ghazi'      => ['ghazy'],
+        'ghazy'      => ['ghazi'],
+        'samir'      => ['sameer'],
+        'sameer'     => ['samir'],
+        'nabil'      => ['nabeel'],
+        'nabeel'     => ['nabil'],
+        'jihad'      => ['jehad', 'gihad'],
+        'jehad'      => ['jihad'],
+        'abdo'       => ['abdou', 'abdel', 'abd'],
+        'abdou'      => ['abdo'],
+        'pere'       => ['père', 'father', 'fr'],
+        'père'       => ['pere', 'father', 'fr'],
+        'gizele'     => ['gisele', 'giselle', 'gizelle'],
+        'gisele'     => ['gizele', 'giselle'],
+        'giselle'    => ['gizele', 'gisele'],
+        'corine'     => ['corinne', 'korine', 'corrine'],
+        'corinne'    => ['corine', 'korine'],
+        'joelle'     => ['joele', 'joell'],
+        'josette'    => ['josete'],
+        'christiane' => ['christine', 'christina'],
+        'christine'  => ['christiane', 'christina'],
+        'claudine'   => ['claudin', 'claudia'],
+        'bernadette' => ['bernadet', 'bernadett'],
+        'monique'    => ['monika', 'monica'],
+        'monika'     => ['monique', 'monica'],
+        'moussa'     => ['mousa', 'musa'],
+        'mousa'      => ['moussa', 'musa'],
+        'raghid'     => ['ragheed', 'rachid', 'rashid'],
+        'rachid'     => ['raghid', 'rashid'],
+        'rashid'     => ['raghid', 'rachid'],
+        'ronald'     => ['ronaldo', 'ronal'],
+        'dolly'      => ['doly', 'dolli'],
+        'nawal'      => ['nawell', 'nawel'],
+        'nawel'      => ['nawal', 'nawell'],
+        'patricia'   => ['patrica', 'patrisia'],
+        'michelle'   => ['mishelle', 'michell', 'michel'],
+        'ghada'      => ['ghada'],
+        'katia'      => ['katya', 'catia'],
+        'katya'      => ['katia'],
+        'martine'    => ['martin', 'martina'],
+        'dina'       => ['deena', 'dena'],
+        'deena'      => ['dina'],
+        'kinda'      => ['kenda'],
+        'magda'      => ['magdah', 'magdalena'],
+        'nazek'      => ['nazeek'],
+        'ghosn'      => ['ghoson', 'ghosen'],
+        'kennie'     => ['kenny', 'keni'],
+        'kenny'      => ['kennie'],
+        'hanne'      => ['hanna', 'hana', 'hannah'],
+        'hanna'      => ['hanne', 'hana', 'hannah'],
+        'isaac'      => ['isac', 'ishac', 'ishak'],
+        'isac'       => ['isaac', 'ishac'],
+    ];
+
+    // ── Strip accents/diacritics for comparison ──
+    $stripAccents = function ($str) {
+        $translitMap = [
+            'à'=>'a','á'=>'a','â'=>'a','ã'=>'a','ä'=>'a','å'=>'a','æ'=>'ae',
+            'ç'=>'c','è'=>'e','é'=>'e','ê'=>'e','ë'=>'e',
+            'ì'=>'i','í'=>'i','î'=>'i','ï'=>'i',
+            'ñ'=>'n','ò'=>'o','ó'=>'o','ô'=>'o','õ'=>'o','ö'=>'o','ø'=>'o',
+            'ù'=>'u','ú'=>'u','û'=>'u','ü'=>'u','ý'=>'y','ÿ'=>'y',
+            'À'=>'A','Á'=>'A','Â'=>'A','Ã'=>'A','Ä'=>'A','Å'=>'A','Æ'=>'AE',
+            'Ç'=>'C','È'=>'E','É'=>'E','Ê'=>'E','Ë'=>'E',
+            'Ì'=>'I','Í'=>'I','Î'=>'I','Ï'=>'I',
+            'Ñ'=>'N','Ò'=>'O','Ó'=>'O','Ô'=>'O','Õ'=>'O','Ö'=>'O','Ø'=>'O',
+            'Ù'=>'U','Ú'=>'U','Û'=>'U','Ü'=>'U','Ý'=>'Y',
+        ];
+        return strtr($str, $translitMap);
+    };
+
+    // ── Helper: check if two words are a fuzzy match ──
+    $wordsMatch = function ($inputWord, $guestWord) use ($aliasMap, $stripAccents) {
+        $a = $stripAccents(strtolower($inputWord));
+        $b = $stripAccents(strtolower($guestWord));
+
+        // Exact after accent strip
+        if ($a === $b) return true;
+
+        // Soundex match
+        if (soundex($a) === soundex($b)) return true;
+
+        // Alias map match
+        if (isset($aliasMap[$a]) && in_array($b, $aliasMap[$a])) return true;
+
+        // Levenshtein for short typos (max distance scales with word length)
+        $maxDist = (strlen($a) <= 4) ? 1 : 2;
+        if (levenshtein($a, $b) <= $maxDist) return true;
+
+        // Alias + Levenshtein: check if input is close to any alias of the guest word
+        if (isset($aliasMap[$b])) {
+            foreach ($aliasMap[$b] as $alias) {
+                $aliasDist = (strlen($a) <= 4) ? 1 : 2;
+                if (levenshtein($a, $alias) <= $aliasDist) return true;
+            }
+        }
+
+        return false;
+    };
+
     $inputWords = preg_split('/[\s\-]+/', strtolower($name));
-    $inputSoundex = array_map('soundex', $inputWords);
+    // Remove "et" from input if present (used as French "and" in couple names)
+    $inputWords = array_values(array_filter($inputWords, function ($w) {
+        return $w !== 'et' && $w !== '&' && $w !== 'and';
+    }));
+    $inputStripped = array_map($stripAccents, $inputWords);
 
     $allGuests = $db->find('guests', ['tenant_id' => $config['tenant_id']]);
     $fuzzyMatches = [];
 
     foreach ($allGuests as $g) {
         $guestWords = preg_split('/[\s\-]+/', $g['name_lower']);
-        $guestSoundex = array_map('soundex', $guestWords);
+        // Remove "et" from guest name for matching
+        $guestFiltered = array_values(array_filter($guestWords, function ($w) {
+            return $w !== 'et' && $w !== '&' && $w !== 'and';
+        }));
 
-        // Every input word must have a soundex match in the guest name
+        // Every input word must match at least one guest word
         $matched = 0;
-        foreach ($inputSoundex as $is) {
-            foreach ($guestSoundex as $gs) {
-                if ($is === $gs) {
+        foreach ($inputWords as $iw) {
+            foreach ($guestFiltered as $gw) {
+                if ($wordsMatch($iw, $gw)) {
                     $matched++;
                     break;
                 }
             }
         }
 
-        if ($matched === count($inputSoundex) && count($inputSoundex) > 0) {
+        if ($matched === count($inputWords) && count($inputWords) > 0) {
             $fuzzyMatches[] = $g;
         }
     }
