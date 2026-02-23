@@ -607,6 +607,7 @@
   var rsvpPlusoneSec       = document.getElementById("rsvp-plusone-section");
   var rsvpPlusoneNameInput = document.getElementById("rsvp-plusone-name");
   var rsvpPlusonePreweddingSec = document.getElementById("rsvp-plusone-prewedding-section");
+  var rsvpPreweddingNotice = document.getElementById("rsvp-prewedding-notice");
 
   var currentGuest = null;
 
@@ -715,10 +716,12 @@
           // Show RSVP form
           rsvpGuestName.textContent = data.guest.name;
 
-          // Show/hide pre-wedding section
+          // Show/hide pre-wedding notice and section
           if (data.guest.prewedding) {
+            rsvpPreweddingNotice.classList.remove("hidden");
             rsvpPreweddingSec.classList.remove("hidden");
           } else {
+            rsvpPreweddingNotice.classList.add("hidden");
             rsvpPreweddingSec.classList.add("hidden");
           }
 
