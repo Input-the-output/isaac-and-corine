@@ -1249,6 +1249,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .rsvp-event-row .rsvp-plus-one-input input {
   width: 100%;
+  background: #fff;
 }
 .radio-group-inline {
   display: flex;
@@ -1256,15 +1257,16 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   flex-shrink: 0;
 }
 .radio-group-inline .radio-label {
-  width: 90px;
-  height: 90px;
-  padding: 0.5rem;
-  font-size: 0.8rem;
-  border-radius: 10px;
-  gap: 0.3rem;
+  width: 72px;
+  height: 72px;
+  padding: 0.35rem;
+  font-size: 0.7rem;
+  border-radius: 8px;
+  gap: 0.2rem;
+  background: #fff;
 }
 .radio-group-inline .radio-label .radio-icon {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
 }
 .form-group {
   margin-bottom: 1.5rem;
