@@ -1550,29 +1550,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   .painting-strip { height: 300px; }
 }
 
-/* ============================
-   CONFETTI OVERLAY
-   ============================ */
-.confetti-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 8000;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: confettiFade 4s ease forwards;
-}
-.confetti-overlay img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-@keyframes confettiFade {
-  0%   { opacity: 1; }
-  70%  { opacity: 1; }
-  100% { opacity: 0; }
-}
+/* Confetti overlay removed — only inline .rsvp-confetti is used */
 
 /* ============================
    SCHEDULE → TRAVEL SPACING

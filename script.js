@@ -585,19 +585,9 @@
   // Initialize for any radio groups already in the DOM
   initRadioSelections(document);
 
-  /* ---------- Confetti overlay ---------- */
-  function showConfetti() {
-    var el = document.createElement("div");
-    el.className = "confetti-overlay";
-    var img = document.createElement("img");
-    img.src = "./assets/confetti-CrGrT4ka.gif";
-    img.alt = "";
-    el.appendChild(img);
-    document.body.appendChild(el);
-    setTimeout(function () {
-      if (el.parentNode) el.parentNode.removeChild(el);
-    }, 4200);
-  }
+  /* ---------- Preload confetti GIF ---------- */
+  var confettiPreload = new Image();
+  confettiPreload.src = "./assets/confetti-CrGrT4ka.gif";
 
   /* ---------- RSVP — Guest Lookup & Confirm ---------- */
   var rsvpLookup       = document.getElementById("rsvp-lookup");
@@ -830,8 +820,6 @@
           return res.json();
         })
         .then(function () {
-          if (isAttending) showConfetti();
-
           rsvpConfirm.classList.add("hidden");
           rsvpSuccess.classList.remove("hidden");
 
