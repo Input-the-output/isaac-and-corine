@@ -163,7 +163,7 @@ try {
 
     $mail->setFrom($config['mail']['from_email'], $config['mail']['from_name']);
 
-    // Support single or multiple recipients (array of emails in config)
+    // Send to all recipients defined in config
     $toEmails = (array) $config['mail']['to_email'];
     $toNames  = (array) ($config['mail']['to_name'] ?? '');
     foreach ($toEmails as $i => $email) {
