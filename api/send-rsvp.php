@@ -171,37 +171,81 @@ try {
     }
 
     $statusLabel = $attending === 'yes' ? 'Joyfully Attending' : 'Regretfully Declining';
+    $statusEmoji = $attending === 'yes' ? '&#10003;' : '&#10007;';
+    $statusColor = $attending === 'yes' ? '#587042' : '#c0392b';
+    $dateStr = date('F j, Y \a\t g:i A');
 
-    // Build detailed email body
-    $body = "New RSVP Received\n"
-        . "──────────────────\n"
-        . "Name: {$name}\n"
-        . "Wedding: {$statusLabel}\n";
+    // Build HTML email
+    $body = '<!DOCTYPE html><html><head><meta charset="UTF-8"></head><body style="margin:0;padding:0;background:#f5f0eb;font-family:Georgia,serif;">'
+        . '<table width="100%" cellpadding="0" cellspacing="0" style="background:#f5f0eb;padding:30px 0;">'
+        . '<tr><td align="center">'
+        . '<table width="500" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,0.08);">'
+        // Header
+        . '<tr><td style="background:#587042;padding:28px 30px;text-align:center;">'
+        . '<h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:400;letter-spacing:1px;">New RSVP Received</h1>'
+        . '</td></tr>'
+        // Guest name
+        . '<tr><td style="padding:30px 30px 10px;text-align:center;">'
+        . '<p style="margin:0;color:#a9b494;font-size:12px;text-transform:uppercase;letter-spacing:2px;">Guest</p>'
+        . '<h2 style="margin:8px 0 0;color:#2c2c2c;font-size:26px;font-weight:400;">' . htmlspecialchars($name) . '</h2>'
+        . '</td></tr>'
+        // Status
+        . '<tr><td style="padding:15px 30px 5px;text-align:center;">'
+        . '<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>'
+        . '<td style="padding:8px 20px;background:' . $statusColor . ';border-radius:20px;color:#ffffff;font-size:14px;letter-spacing:0.5px;">'
+        . $statusEmoji . '&nbsp; ' . htmlspecialchars($statusLabel)
+        . '</td></tr></table>'
+        . '</td></tr>';
 
+    // Pre-wedding
     if ($preweddingAttending !== null) {
         $preweddingLabel = $preweddingAttending === 'yes' ? 'Attending' : 'Declining';
-        $body .= "Pre-Wedding: {$preweddingLabel}\n";
+        $preweddingColor = $preweddingAttending === 'yes' ? '#587042' : '#c0392b';
+        $body .= '<tr><td style="padding:12px 30px 0;text-align:center;">'
+            . '<p style="margin:0 0 6px;color:#a9b494;font-size:12px;text-transform:uppercase;letter-spacing:2px;">Pre-Wedding</p>'
+            . '<span style="color:' . $preweddingColor . ';font-size:15px;">' . htmlspecialchars($preweddingLabel) . '</span>'
+            . '</td></tr>';
     }
 
+    // Divider
+    $body .= '<tr><td style="padding:20px 30px 0;">'
+        . '<hr style="border:none;border-top:1px solid #efdfd5;margin:0;">'
+        . '</td></tr>';
+
+    // Plus one
     if (!empty($plusOneName)) {
-        $body .= "──────────────────\n"
-            . "Plus One: {$plusOneName}\n";
+        $body .= '<tr><td style="padding:20px 30px 5px;text-align:center;">'
+            . '<p style="margin:0;color:#a9b494;font-size:12px;text-transform:uppercase;letter-spacing:2px;">Plus One</p>'
+            . '<h3 style="margin:8px 0 0;color:#2c2c2c;font-size:20px;font-weight:400;">' . htmlspecialchars($plusOneName) . '</h3>'
+            . '</td></tr>';
         if ($plusOneAttending !== null) {
             $plusOneLabel = $plusOneAttending === 'yes' ? 'Attending' : 'Declining';
-            $body .= "  Wedding: {$plusOneLabel}\n";
+            $plusOneColor = $plusOneAttending === 'yes' ? '#587042' : '#c0392b';
+            $body .= '<tr><td style="padding:10px 30px 0;text-align:center;">'
+                . '<table cellpadding="0" cellspacing="0" style="margin:0 auto;"><tr>'
+                . '<td style="padding:6px 16px;background:' . $plusOneColor . ';border-radius:20px;color:#ffffff;font-size:13px;">'
+                . htmlspecialchars($plusOneLabel) . '</td></tr></table>'
+                . '</td></tr>';
         }
         if ($plusOnePreweddingAttending !== null) {
             $plusOnePreweddingLabel = $plusOnePreweddingAttending === 'yes' ? 'Attending' : 'Declining';
-            $body .= "  Pre-Wedding: {$plusOnePreweddingLabel}\n";
+            $plusOnePreweddingColor = $plusOnePreweddingAttending === 'yes' ? '#587042' : '#c0392b';
+            $body .= '<tr><td style="padding:10px 30px 0;text-align:center;">'
+                . '<p style="margin:0 0 6px;color:#a9b494;font-size:12px;text-transform:uppercase;letter-spacing:2px;">Pre-Wedding</p>'
+                . '<span style="color:' . $plusOnePreweddingColor . ';font-size:14px;">' . htmlspecialchars($plusOnePreweddingLabel) . '</span>'
+                . '</td></tr>';
         }
     }
 
-    $body .= "──────────────────\n"
-        . "Date: " . date('F j, Y g:i A') . "\n"
-        . "──────────────────\n";
+    // Footer
+    $body .= '<tr><td style="padding:25px 30px;text-align:center;">'
+        . '<p style="margin:0;color:#999;font-size:12px;">' . $dateStr . '</p>'
+        . '</td></tr>'
+        . '</table></td></tr></table></body></html>';
 
-    $mail->isHTML(false);
-    $mail->Subject = "RSVP: {$name} — {$statusLabel}";
+    $mail->CharSet = 'UTF-8';
+    $mail->isHTML(true);
+    $mail->Subject = "RSVP: " . $name . " - " . $statusLabel;
     $mail->Body    = $body;
 
     $mail->send();
