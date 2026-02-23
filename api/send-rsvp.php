@@ -167,8 +167,6 @@ try {
     $toEmails = (array) $config['mail']['to_email'];
     $toNames  = (array) ($config['mail']['to_name'] ?? '');
     foreach ($toEmails as $i => $email) {
-        // Comment out second recipient during testing
-        if ($i > 0) continue;
         $mail->addAddress($email, $toNames[$i] ?? '');
     }
 
