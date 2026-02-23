@@ -1226,20 +1226,18 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   margin-bottom: 1rem;
 }
 .rsvp-event-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .rsvp-event-row:last-child {
   margin-bottom: 0;
 }
 .rsvp-event-name {
-  flex: 1;
-  min-width: 160px;
   font-family: var(--font-display);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   color: var(--sage-dark);
   padding: 0.65rem 0.9rem;
   background: #fff;
@@ -1247,8 +1245,6 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   border-radius: 8px;
 }
 .rsvp-event-row .rsvp-plus-one-input {
-  flex: 1;
-  min-width: 160px;
   margin: 0;
 }
 .rsvp-event-row .rsvp-plus-one-input input {
@@ -1258,6 +1254,17 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   display: flex;
   gap: 0.5rem;
   flex-shrink: 0;
+}
+.radio-group-inline .radio-label {
+  width: 90px;
+  height: 90px;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  border-radius: 10px;
+  gap: 0.3rem;
+}
+.radio-group-inline .radio-label .radio-icon {
+  font-size: 1.3rem;
 }
 .form-group {
   margin-bottom: 1.5rem;
@@ -1336,6 +1343,17 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 @media (max-width: 400px) {
   .radio-group { grid-template-columns: 1fr; }
+  .rsvp-event-row {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+  .rsvp-event-name,
+  .rsvp-event-row .rsvp-plus-one-input {
+    width: 100%;
+  }
+  .radio-group-inline {
+    justify-content: center;
+  }
 }
 
 .rsvp-form .btn-primary {
