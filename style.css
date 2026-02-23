@@ -34,7 +34,7 @@
 html { scroll-behavior: smooth; color-scheme: light only; scroll-padding-top: 60px; }
 body {
   font-family: var(--font-body);
-  font-size: 1.1rem;
+  font-size: 0.935rem;
   color: var(--foreground);
   background: var(--background);
   line-height: 1.7;
@@ -196,7 +196,7 @@ body.page-leaving {
 }
 .intro-prompt-tap {
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   color: var(--muted-fg);
   letter-spacing: 0.1em;
 }
@@ -377,7 +377,7 @@ body.page-leaving {
 .section-subtitle {
   text-align: center;
   font-family: var(--font-body);
-  font-size: 1.25rem;
+  font-size: 1.06rem;
   color: var(--muted-fg);
   font-style: italic;
   margin-bottom: 3rem;
@@ -422,12 +422,12 @@ body.page-leaving {
   font-family: var(--font-body);
   font-style: italic;
   color: var(--muted-fg);
-  font-size: 1.125rem;
+  font-size: 0.956rem;
   margin: 0.6rem 0;
 }
 .invitation-request {
   font-family: var(--font-body);
-  font-size: 1.125rem;
+  font-size: 0.956rem;
   color: var(--muted-fg);
   margin: 1.5rem 0;
   line-height: 1.8;
@@ -507,7 +507,7 @@ body.page-leaving {
 }
 .invitation-detail {
   font-family: var(--font-body);
-  font-size: 1.125rem;
+  font-size: 0.956rem;
   color: var(--muted-fg);
   margin: 0.75rem 0;
   line-height: 1.7;
@@ -526,7 +526,7 @@ body.page-leaving {
 .invitation-venue p {
   font-family: var(--font-body);
   color: var(--muted-fg);
-  font-size: 1.125rem;
+  font-size: 0.956rem;
   font-style: italic;
 }
 
@@ -559,7 +559,7 @@ body.page-leaving {
 .countdown-label {
   display: block;
   font-family: var(--font-body);
-  font-size: 0.75rem;
+  font-size: 0.64rem;
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--muted-fg);
@@ -632,13 +632,13 @@ body.page-leaving {
   font-family: var(--font-body);
   font-style: italic;
   color: var(--sage);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   margin-bottom: 0.25rem;
 }
 .location-address {
   font-family: var(--font-body);
   color: var(--muted-fg);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   margin-bottom: 1.25rem;
 }
 .location-map {
@@ -745,7 +745,7 @@ body.page-leaving {
 }
 .timeline-content p {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   color: var(--muted-fg);
   margin-top: 0.2rem;
 }
@@ -814,7 +814,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   text-align: center;
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   color: var(--muted-fg);
 }
 
@@ -866,7 +866,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 .acc-list.two-col { columns: 2; }
 .acc-list li {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   color: var(--foreground);
   padding: 0.3rem 0;
   break-inside: avoid;
@@ -962,7 +962,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .dest-desc {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   color: rgba(255,255,255,0.8);
   font-style: italic;
   line-height: 1.4;
@@ -1048,7 +1048,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .discover-hero-overlay p {
   font-family: var(--font-body);
-  font-size: 1.05rem;
+  font-size: 0.89rem;
   font-style: italic;
   color: rgba(255,255,255,0.8);
 }
@@ -1089,7 +1089,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .gtk-card p {
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   color: var(--muted-fg);
 }
 
@@ -1161,7 +1161,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .bank-row dd {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   color: var(--sage-dark);
   text-align: right;
   margin: 0;
@@ -1209,7 +1209,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .prewedding-notice-text {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.81rem;
   color: var(--text);
   line-height: 1.5;
 }
@@ -1236,14 +1236,14 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .rsvp-event-date {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.81rem;
   color: var(--muted-fg);
   text-align: center;
   margin-bottom: 0.25rem;
 }
 .rsvp-event-note {
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-style: italic;
   color: var(--muted-fg);
   text-align: center;
@@ -1315,7 +1315,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   width: 100%;
   padding: 0.75rem 1rem;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.81rem;
   color: var(--foreground);
   background: var(--cream);
   border: 1px solid var(--border);
@@ -1407,7 +1407,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 .rsvp-success p {
   font-family: var(--font-body);
   color: var(--muted-fg);
-  font-size: 1rem;
+  font-size: 0.85rem;
 }
 
 /* ============================
@@ -1510,7 +1510,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .footer-tagline {
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   font-style: italic;
   color: rgba(239, 223, 213, 0.5);
   margin-bottom: 2rem;
@@ -1598,7 +1598,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .schedule-card-sub {
   font-family: var(--font-body);
-  font-size: 0.8rem;
+  font-size: 0.68rem;
   color: var(--muted-fg);
   font-style: italic;
 }
@@ -1703,7 +1703,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 }
 .gtk-list li {
   font-family: var(--font-body);
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   color: var(--muted-fg);
   padding: 0.15rem 0;
 }
@@ -1723,7 +1723,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 .rsvp-error {
   text-align: center;
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.765rem;
   color: #b45454;
   margin-top: 1rem;
   animation: fadeInUp 0.4s ease;
@@ -1839,7 +1839,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
 .rsvp-already-submitted p {
   font-family: var(--font-body);
   color: var(--muted-fg);
-  font-size: 1rem;
+  font-size: 0.85rem;
   line-height: 1.7;
 }
 
@@ -1860,7 +1860,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   width: 100%;
   padding: 0.65rem 0.9rem;
   font-family: var(--font-body);
-  font-size: 0.855rem;
+  font-size: 0.73rem;
   color: var(--foreground);
   background: var(--background);
   border: 2px solid var(--border);
