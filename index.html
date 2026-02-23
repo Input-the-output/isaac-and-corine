@@ -238,7 +238,7 @@
               </div>
             </div>
             <div class="timeline-item">
-              <div class="timeline-time">6:00 PM</div>
+              <div class="timeline-time"></div>
               <div class="timeline-dot"></div>
               <div class="timeline-content">
                 <h4>Ceremony</h4>
@@ -246,7 +246,7 @@
               </div>
             </div>
             <div class="timeline-item">
-              <div class="timeline-time">7:00 PM</div>
+              <div class="timeline-time"></div>
               <div class="timeline-dot"></div>
               <div class="timeline-content">
                 <h4>Guest Arrival</h4>
@@ -254,7 +254,7 @@
               </div>
             </div>
             <div class="timeline-item">
-              <div class="timeline-time">7:00 PM</div>
+              <div class="timeline-time"></div>
               <div class="timeline-dot"></div>
               <div class="timeline-content">
                 <h4>Welcome Drink</h4>
@@ -561,81 +561,40 @@
             </div>
 
             <div id="rsvp-prewedding-notice" class="rsvp-prewedding-notice hidden">
-              <p class="prewedding-notice-emoji">🍾</p>
-              <p class="prewedding-notice-title">The celebrations begin before the big day!</p>
-              <p class="prewedding-notice-text">If you can, we encourage you to arrive starting Tuesday, as we'll be enjoying a few fun plans throughout the week!<br>More details to follow.</p>
+              <p class="prewedding-notice-icon">&#10045;</p>
+              <p class="prewedding-notice-title"><strong>The celebrations will begin before the big day!</strong></p>
+              <p class="prewedding-notice-text">If you can, we encourage you to arrive starting <strong>Tuesday</strong>, as we'll be enjoying a few fun plans throughout the week!<br>More details to follow.</p>
             </div>
 
             <div class="rsvp-form">
-              <!-- Your RSVP -->
-              <p class="rsvp-section-label">Your RSVP</p>
 
-              <div class="form-group">
-                <label>Wedding Celebration</label>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="attending" value="yes">
-                    <span class="radio-icon">&#10003;</span>
-                    <span>Joyfully<br>Attending</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="attending" value="no">
-                    <span class="radio-icon">&#10007;</span>
-                    <span>Regretfully<br>Declining</span>
-                  </label>
-                </div>
-              </div>
+              <!-- PRE-WEDDING EVENT SECTION -->
+              <div id="rsvp-prewedding-section" class="rsvp-event-section hidden">
+                <h3 class="rsvp-event-title">Pre-Wedding</h3>
+                <p class="rsvp-event-date">Thursday 18 June 2026</p>
+                <p class="rsvp-event-note">Details to follow</p>
 
-              <div id="rsvp-prewedding-section" class="form-group hidden">
-                <label>Pre-Wedding Party</label>
-                <div class="radio-group">
-                  <label class="radio-label">
-                    <input type="radio" name="prewedding_attending" value="yes">
-                    <span class="radio-icon">&#10003;</span>
-                    <span>Joyfully<br>Attending</span>
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="prewedding_attending" value="no">
-                    <span class="radio-icon">&#10007;</span>
-                    <span>Regretfully<br>Declining</span>
-                  </label>
-                </div>
-              </div>
-
-              <!-- Plus One Section -->
-              <div id="rsvp-plusone-section" class="hidden">
-                <div class="rsvp-divider">
-                  <span class="rsvp-divider-line"></span>
-                  <span class="rsvp-divider-icon">&#10022;</span>
-                  <span class="rsvp-divider-line"></span>
-                </div>
-
-                <p class="rsvp-section-label">Your Plus One</p>
-
-                <div class="rsvp-plus-one-input">
-                  <label for="rsvp-plusone-name">Full Name</label>
-                  <input type="text" id="rsvp-plusone-name" placeholder="Enter your plus one's name" autocomplete="off">
-                </div>
-
-                <div class="form-group">
-                  <label>Wedding Celebration</label>
-                  <div class="radio-group">
+                <div class="rsvp-event-row">
+                  <div class="rsvp-event-name" id="rsvp-prewed-guest-name"></div>
+                  <div class="radio-group radio-group-inline">
                     <label class="radio-label">
-                      <input type="radio" name="plus_one_attending" value="yes">
+                      <input type="radio" name="prewedding_attending" value="yes">
                       <span class="radio-icon">&#10003;</span>
-                      <span>Attending</span>
+                      <span>Joyfully<br>Attending</span>
                     </label>
                     <label class="radio-label">
-                      <input type="radio" name="plus_one_attending" value="no">
+                      <input type="radio" name="prewedding_attending" value="no">
                       <span class="radio-icon">&#10007;</span>
-                      <span>Declining</span>
+                      <span>Regretfully<br>Declining</span>
                     </label>
                   </div>
                 </div>
 
-                <div id="rsvp-plusone-prewedding-section" class="form-group hidden">
-                  <label>Pre-Wedding Party</label>
-                  <div class="radio-group">
+                <div id="rsvp-prewed-plusone-row" class="rsvp-event-row hidden">
+                  <div class="rsvp-plus-one-input">
+                    <input type="text" id="rsvp-prewed-plusone-name" placeholder="Your plus one's name" autocomplete="off">
+                  </div>
+                  <div class="radio-group radio-group-inline">
                     <label class="radio-label">
                       <input type="radio" name="plus_one_prewedding_attending" value="yes">
                       <span class="radio-icon">&#10003;</span>
@@ -643,6 +602,46 @@
                     </label>
                     <label class="radio-label">
                       <input type="radio" name="plus_one_prewedding_attending" value="no">
+                      <span class="radio-icon">&#10007;</span>
+                      <span>Declining</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- WEDDING EVENT SECTION -->
+              <div class="rsvp-event-section">
+                <h3 class="rsvp-event-title">Wedding</h3>
+                <p class="rsvp-event-date">Saturday 20 June 2026</p>
+
+                <div class="rsvp-event-row">
+                  <div class="rsvp-event-name" id="rsvp-wed-guest-name"></div>
+                  <div class="radio-group radio-group-inline">
+                    <label class="radio-label">
+                      <input type="radio" name="attending" value="yes">
+                      <span class="radio-icon">&#10003;</span>
+                      <span>Joyfully<br>Attending</span>
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="attending" value="no">
+                      <span class="radio-icon">&#10007;</span>
+                      <span>Regretfully<br>Declining</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div id="rsvp-wed-plusone-row" class="rsvp-event-row hidden">
+                  <div class="rsvp-plus-one-input">
+                    <input type="text" id="rsvp-plusone-name" placeholder="Your plus one's name" autocomplete="off">
+                  </div>
+                  <div class="radio-group radio-group-inline">
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_attending" value="yes">
+                      <span class="radio-icon">&#10003;</span>
+                      <span>Attending</span>
+                    </label>
+                    <label class="radio-label">
+                      <input type="radio" name="plus_one_attending" value="no">
                       <span class="radio-icon">&#10007;</span>
                       <span>Declining</span>
                     </label>

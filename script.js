@@ -604,10 +604,13 @@
   var rsvpAlreadyBackBtn   = document.getElementById("rsvp-already-back-btn");
   var rsvpAlreadyGuestName = document.getElementById("rsvp-already-guest-name");
   var rsvpPreweddingSec    = document.getElementById("rsvp-prewedding-section");
-  var rsvpPlusoneSec       = document.getElementById("rsvp-plusone-section");
   var rsvpPlusoneNameInput = document.getElementById("rsvp-plusone-name");
-  var rsvpPlusonePreweddingSec = document.getElementById("rsvp-plusone-prewedding-section");
   var rsvpPreweddingNotice = document.getElementById("rsvp-prewedding-notice");
+  var rsvpPrewedGuestName  = document.getElementById("rsvp-prewed-guest-name");
+  var rsvpWedGuestName     = document.getElementById("rsvp-wed-guest-name");
+  var rsvpPrewedPlusoneRow = document.getElementById("rsvp-prewed-plusone-row");
+  var rsvpWedPlusoneRow    = document.getElementById("rsvp-wed-plusone-row");
+  var rsvpPrewedPlusoneNameInput = document.getElementById("rsvp-prewed-plusone-name");
 
   var currentGuest = null;
 
@@ -615,6 +618,11 @@
   if (rsvpPlusoneNameInput) {
     rsvpPlusoneNameInput.addEventListener("input", function () {
       rsvpPlusoneNameInput.classList.remove("input-error");
+    });
+  }
+  if (rsvpPrewedPlusoneNameInput) {
+    rsvpPrewedPlusoneNameInput.addEventListener("input", function () {
+      rsvpPrewedPlusoneNameInput.classList.remove("input-error");
     });
   }
 
@@ -627,15 +635,20 @@
     rsvpConfirm.querySelectorAll(".radio-label").forEach(function (l) {
       l.classList.remove("selected");
     });
-    // Clear plus-one name
+    // Clear plus-one names
     if (rsvpPlusoneNameInput) {
       rsvpPlusoneNameInput.value = "";
       rsvpPlusoneNameInput.classList.remove("input-error");
     }
+    if (rsvpPrewedPlusoneNameInput) {
+      rsvpPrewedPlusoneNameInput.value = "";
+      rsvpPrewedPlusoneNameInput.classList.remove("input-error");
+    }
     // Hide conditional sections
     rsvpPreweddingSec.classList.add("hidden");
-    rsvpPlusoneSec.classList.add("hidden");
-    rsvpPlusonePreweddingSec.classList.add("hidden");
+    rsvpPreweddingNotice.classList.add("hidden");
+    rsvpWedPlusoneRow.classList.add("hidden");
+    rsvpPrewedPlusoneRow.classList.add("hidden");
     // Reset button
     rsvpSubmitBtn.disabled = false;
     rsvpSubmitBtn.textContent = "Send Confirmation";
@@ -725,27 +738,29 @@
 
           // Show RSVP form
           rsvpGuestName.textContent = data.guest.name;
+          rsvpWedGuestName.textContent = data.guest.name;
 
-          // Show/hide pre-wedding notice and section
+          // Show/hide pre-wedding section
           if (data.guest.prewedding) {
             rsvpPreweddingNotice.classList.remove("hidden");
             rsvpPreweddingSec.classList.remove("hidden");
+            rsvpPrewedGuestName.textContent = data.guest.name;
+            // Show plus-one row in pre-wedding if guest has +1
+            if (data.guest.plus_one) {
+              rsvpPrewedPlusoneRow.classList.remove("hidden");
+            } else {
+              rsvpPrewedPlusoneRow.classList.add("hidden");
+            }
           } else {
             rsvpPreweddingNotice.classList.add("hidden");
             rsvpPreweddingSec.classList.add("hidden");
           }
 
-          // Show/hide plus-one section
+          // Show/hide plus-one row in wedding section
           if (data.guest.plus_one) {
-            rsvpPlusoneSec.classList.remove("hidden");
-            // Show/hide plus-one pre-wedding
-            if (data.guest.prewedding) {
-              rsvpPlusonePreweddingSec.classList.remove("hidden");
-            } else {
-              rsvpPlusonePreweddingSec.classList.add("hidden");
-            }
+            rsvpWedPlusoneRow.classList.remove("hidden");
           } else {
-            rsvpPlusoneSec.classList.add("hidden");
+            rsvpWedPlusoneRow.classList.add("hidden");
           }
 
           rsvpLookup.classList.add("hidden");
@@ -771,6 +786,7 @@
   // Step 2: Submit attendance
   if (rsvpSubmitBtn) {
     rsvpSubmitBtn.addEventListener("click", function () {
+      // Validate wedding attendance
       var attending = document.querySelector('#rsvp-confirm input[name="attending"]:checked');
       if (!attending) return;
 
@@ -795,6 +811,15 @@
         if (currentGuest.prewedding) {
           var plusOnePrewedding = document.querySelector('#rsvp-confirm input[name="plus_one_prewedding_attending"]:checked');
           if (!plusOnePrewedding) return;
+          // Validate pre-wedding plus-one name if attending
+          if (plusOnePrewedding.value === "yes") {
+            var prewedPlusOneName = rsvpPrewedPlusoneNameInput ? rsvpPrewedPlusoneNameInput.value.trim() : "";
+            if (!prewedPlusOneName) {
+              rsvpPrewedPlusoneNameInput.focus();
+              rsvpPrewedPlusoneNameInput.classList.add("input-error");
+              return;
+            }
+          }
         }
       }
 
@@ -815,7 +840,7 @@
         submitData.prewedding_attending = document.querySelector('#rsvp-confirm input[name="prewedding_attending"]:checked').value;
       }
 
-      // Plus-one
+      // Plus-one — use the wedding plus-one name as primary
       if (currentGuest.plus_one) {
         submitData.plus_one_name = rsvpPlusoneNameInput ? rsvpPlusoneNameInput.value.trim() : "";
         submitData.plus_one_attending = document.querySelector('#rsvp-confirm input[name="plus_one_attending"]:checked').value;
