@@ -1280,7 +1280,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   height: 100%;
   background: var(--background);
   border: 2px solid var(--border);
-  font-size: 0.956rem;
+  font-size: 0.86rem;
 }
 .radio-group-inline {
   display: grid;
@@ -1860,7 +1860,7 @@ a.stay-card { text-decoration: none; color: var(--sage-dark); }
   width: 100%;
   padding: 0.65rem 0.9rem;
   font-family: var(--font-body);
-  font-size: 0.956rem;
+  font-size: 0.86rem;
   color: var(--foreground);
   background: var(--background);
   border: 2px solid var(--border);
