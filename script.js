@@ -763,6 +763,16 @@
             rsvpWedPlusoneRow.classList.add("hidden");
           }
 
+          // Pre-fill plus-one name inputs if a name is defined in the database
+          if (data.guest.plus_one_name) {
+            if (rsvpPlusoneNameInput) {
+              rsvpPlusoneNameInput.value = data.guest.plus_one_name;
+            }
+            if (rsvpPrewedPlusoneNameInput) {
+              rsvpPrewedPlusoneNameInput.value = data.guest.plus_one_name;
+            }
+          }
+
           rsvpLookup.classList.add("hidden");
           rsvpConfirm.classList.remove("hidden");
 
